@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "transport": "stdio",
+  "toolCount": 6,
+  "syntheticAccessories": 2,
+  "syntheticEvents": 2,
+  "defaultPolicy": "read-only + explicit allowlist",
+  "persistentIntegration": false,
+  "actualHomeKitAccess": false,
+  "dotVoiceConnected": false
+}

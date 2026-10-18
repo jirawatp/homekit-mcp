@@ -1,0 +1,8 @@
+# Review before adding to a LOCAL client's scoped configuration. Nothing has been installed.
+# Native profile needs a signed/provisioned app, explicit access approval and accessory allowlist.
+[mcp_servers.homekit_own_docker_mock]
+enabled = false
+command = "docker"
+args = ["run","--rm","-i","--pull=never","--network=none","--read-only","--user=1000:1000","--cap-drop=ALL","--security-opt=no-new-privileges:true","--memory=192m","--memory-swap=192m","--cpus=0.5","--pids-limit=64","--init","--log-driver=none","--tmpfs=/tmp:rw,noexec,nosuid,nodev,size=16m,mode=1777","homekit-mcp:local"]
+startup_timeout_sec = 15
+tool_timeout_sec = 60

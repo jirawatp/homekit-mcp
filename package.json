@@ -1,0 +1,31 @@
+{
+  "name": "homekit-mcp",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Original local read-only HomeKit MCP with a gated Swift Mac Catalyst bridge",
+  "type": "module",
+  "engines": { "node": ">=22.19.0" },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "npm run build && node --test dist/test/*.test.js",
+    "start": "node dist/src/index.js",
+    "smoke": "npm run build && node scripts/smoke.mjs",
+    "smoke:native": "npm run build && node scripts/smoke-native-fixture.mjs",
+    "smoke:docker": "node scripts/smoke-docker.mjs",
+    "host-gateway": "node dist/src/host-gateway.js",
+    "build:native": "bash scripts/build-native.sh",
+    "test:native": "bash scripts/test-native.sh",
+    "doctor": "node scripts/doctor.mjs",
+    "client-config": "node scripts/client-config.mjs",
+    "test:all": "npm test && npm run test:native && node scripts/smoke-native-fixture.mjs && npm run build:native"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/server": "2.3.1",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/client": "2.3.1",
+    "@types/node": "22.20.5",
+    "typescript": "7.0.2"
+  }
+}

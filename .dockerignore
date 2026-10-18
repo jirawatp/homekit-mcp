@@ -1,0 +1,13 @@
+# Allowlist the build context. In particular, never send native app builds,
+# household allowlists, certificates, tokens, caches, .git, or local client files.
+**
+!Dockerfile
+!package.json
+!package-lock.json
+!tsconfig.json
+!src/
+!src/**
+!test/
+!test/**
+!config/
+!config/mock.json

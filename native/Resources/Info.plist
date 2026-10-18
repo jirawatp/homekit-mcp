@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+  <key>CFBundleIdentifier</key><string>local.homekit-mcp.bridge</string>
+  <key>CFBundleName</key><string>HomeKit MCP Bridge</string>
+  <key>CFBundleDisplayName</key><string>HomeKit MCP Bridge</string>
+  <key>CFBundleExecutable</key><string>HomeKitMCPBridge</string>
+  <key>CFBundlePackageType</key><string>APPL</string>
+  <key>CFBundleShortVersionString</key><string>0.1.0</string>
+  <key>CFBundleVersion</key><string>1</string>
+  <key>LSMinimumSystemVersion</key><string>14.0</string>
+  <key>CFBundleSupportedPlatforms</key><array><string>MacOSX</string></array>
+  <key>UIDeviceFamily</key><array><integer>2</integer></array>
+  <key>UIApplicationSupportsIndirectInputEvents</key><true/>
+  <key>NSHomeKitUsageDescription</key><string>Read only the Apple Home accessories you explicitly allow for your local MCP assistant.</string>
+  <key>NSPrincipalClass</key><string>NSApplication</string>
+</dict></plist>

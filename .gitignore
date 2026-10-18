@@ -1,0 +1,24 @@
+node_modules/
+dist/
+build/
+.build/
+.cache/
+.DS_Store
+# Only synthetic and deny-all example configuration is publishable.
+config/*
+!config/homekit.example.json
+!config/mock.json
+.env
+.env.*
+!.env.example
+docs/environment.json
+examples/*.local.toml
+*.mobileprovision
+*.provisionprofile
+*.p12
+*.key
+*.pem
+*.xcuserstate
+xcuserdata/
+private-cache/
+logs/

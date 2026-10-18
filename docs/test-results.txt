@@ -1,0 +1,576 @@
+
+> homekit-mcp@0.1.0 test
+> npm run build && node --test dist/test/*.test.js
+
+
+> homekit-mcp@0.1.0 build
+> tsc -p tsconfig.json
+
+TAP version 13
+# Subtest: empty allowlist discloses no accessory and rejects read before contacting bridge
+ok 1 - empty allowlist discloses no accessory and rejects read before contacting bridge
+  ---
+  duration_ms: 3.720875
+  type: 'test'
+  ...
+# Subtest: configuration rejects write mode, wildcard, duplicates and unknown keys
+ok 2 - configuration rejects write mode, wildcard, duplicates and unknown keys
+  ---
+  duration_ms: 0.895625
+  type: 'test'
+  ...
+# Subtest: configuration input is bounded before parsing and file handles close on rejection
+ok 3 - configuration input is bounded before parsing and file handles close on rejection
+  ---
+  duration_ms: 7.712209
+  type: 'test'
+  ...
+# Subtest: UUID normalization agrees with native bridge and rejects case-folded duplicates
+ok 4 - UUID normalization agrees with native bridge and rejects case-folded duplicates
+  ---
+  duration_ms: 0.620209
+  type: 'test'
+  ...
+# Subtest: wrapper removes unallowed devices and unsafe camera/lock/garage services and characteristics
+ok 5 - wrapper removes unallowed devices and unsafe camera/lock/garage services and characteristics
+  ---
+  duration_ms: 0.582583
+  type: 'test'
+  ...
+# Subtest: wrong accessory identity fails closed and mock values carry observation time
+ok 6 - wrong accessory identity fails closed and mock values carry observation time
+  ---
+  duration_ms: 0.1795
+  type: 'test'
+  ...
+# Subtest: connector is disabled by default and the default verifier never grants access
+ok 7 - connector is disabled by default and the default verifier never grants access
+  ---
+  duration_ms: 4.287625
+  type: 'test'
+  ...
+# Subtest: an explicit narrow synthetic read succeeds with exact claims, scope and accessory
+ok 8 - an explicit narrow synthetic read succeeds with exact claims, scope and accessory
+  ---
+  duration_ms: 0.171291
+  type: 'test'
+  ...
+# Subtest: expiry, issuer, audience, subject and scope deny independently
+ok 9 - expiry, issuer, audience, subject and scope deny independently
+  ---
+  duration_ms: 0.399708
+  type: 'test'
+  ...
+# Subtest: tools, accessory sets and household sharing need their own explicit allowlists
+ok 10 - tools, accessory sets and household sharing need their own explicit allowlists
+  ---
+  duration_ms: 0.129375
+  type: 'test'
+  ...
+# Subtest: all six existing tools have explicit read scopes; every unknown or physical-control tool is denied
+ok 11 - all six existing tools have explicit read scopes; every unknown or physical-control tool is denied
+  ---
+  duration_ms: 0.3405
+  type: 'test'
+  ...
+# Subtest: invalid verifier results, verifier failures and malformed policies/requests fail closed
+ok 12 - invalid verifier results, verifier failures and malformed policies/requests fail closed
+  ---
+  duration_ms: 0.293584
+  type: 'test'
+  ...
+# Subtest: a disabled policy during verification denies the pending request
+ok 13 - a disabled policy during verification denies the pending request
+  ---
+  duration_ms: 0.063792
+  type: 'test'
+  ...
+# Subtest: policy revocation during verification is rechecked; the resolved request is snapshotted
+ok 14 - policy revocation during verification is rechecked; the resolved request is snapshotted
+  ---
+  duration_ms: 1.268917
+  type: 'test'
+  ...
+# Subtest: production expiry is evaluated after asynchronous verification
+ok 15 - production expiry is evaluated after asynchronous verification
+  ---
+  duration_ms: 0.289958
+  type: 'test'
+  ...
+# Subtest: synthetic event search filters rooms/types and returns timestamped metadata only
+ok 16 - synthetic event search filters rooms/types and returns timestamped metadata only
+  ---
+  duration_ms: 1.622334
+  type: 'test'
+  ...
+# Subtest: history unsupported is unavailable, never an empty search result
+ok 17 - history unsupported is unavailable, never an empty search result
+  ---
+  duration_ms: 0.800667
+  type: 'test'
+  ...
+# Subtest: available search with no matching events remains available with unknown freshness
+ok 18 - available search with no matching events remains available with unknown freshness
+  ---
+  duration_ms: 0.143459
+  type: 'test'
+  ...
+# Subtest: events are newest first, limited, and filtered by inclusive time bounds
+ok 19 - events are newest first, limited, and filtered by inclusive time bounds
+  ---
+  duration_ms: 0.105541
+  type: 'test'
+  ...
+# Subtest: invalid ranges, future requests, limits, and unsupported identification are rejected
+ok 20 - invalid ranges, future requests, limits, and unsupported identification are rejected
+  ---
+  duration_ms: 0.415875
+  type: 'test'
+  ...
+# Subtest: fixtures and results are isolated and reject URL/path media references
+ok 21 - fixtures and results are isolated and reject URL/path media references
+  ---
+  duration_ms: 0.174042
+  type: 'test'
+  ...
+# Subtest: pure handler dispatches only the three read commands and envelopes results
+ok 22 - pure handler dispatches only the three read commands and envelopes results
+  ---
+  duration_ms: 2.719083
+  type: 'test'
+  ...
+# Subtest: path and method failures never access the bridge
+ok 23 - path and method failures never access the bridge
+  ---
+  duration_ms: 0.133459
+  type: 'test'
+  ...
+# Subtest: missing, wrong, short, duplicate, or array bearer headers never access the bridge
+ok 24 - missing, wrong, short, duplicate, or array bearer headers never access the bridge
+  ---
+  duration_ms: 0.257625
+  type: 'test'
+  ...
+# Subtest: any Origin, including empty or null-like Origin, is rejected without CORS
+ok 25 - any Origin, including empty or null-like Origin, is rejected without CORS
+  ---
+  duration_ms: 0.080833
+  type: 'test'
+  ...
+# Subtest: JSON media type is mandatory and compressed or duplicate types are rejected
+ok 26 - JSON media type is mandatory and compressed or duplicate types are rejected
+  ---
+  duration_ms: 0.241709
+  type: 'test'
+  ...
+# Subtest: oversized actual or declared bodies are rejected before bridge access
+ok 27 - oversized actual or declared bodies are rejected before bridge access
+  ---
+  duration_ms: 0.10625
+  type: 'test'
+  ...
+# Subtest: invalid UTF-8, malformed JSON, lengths, and nonobjects are rejected
+ok 28 - invalid UTF-8, malformed JSON, lengths, and nonobjects are rejected
+  ---
+  duration_ms: 0.488459
+  type: 'test'
+  ...
+# Subtest: unknown fields, actuation, missing IDs, and malformed IDs are rejected
+ok 29 - unknown fields, actuation, missing IDs, and malformed IDs are rejected
+  ---
+  duration_ms: 5.769167
+  type: 'test'
+  ...
+# Subtest: UUID IDs are normalized through the same configuration policy
+ok 30 - UUID IDs are normalized through the same configuration policy
+  ---
+  duration_ms: 7.704875
+  type: 'test'
+  ...
+# Subtest: real wrapper denies IDs outside the allowlist before touching its transport
+ok 31 - real wrapper denies IDs outside the allowlist before touching its transport
+  ---
+  duration_ms: 0.402375
+  type: 'test'
+  ...
+# Subtest: bridge errors never return native messages, device names, or stack traces
+ok 32 - bridge errors never return native messages, device names, or stack traces
+  ---
+  duration_ms: 0.158416
+  type: 'test'
+  ...
+# Subtest: oversized bridge output is withheld and replaced with a bounded generic error
+ok 33 - oversized bridge output is withheld and replaced with a bounded generic error
+  ---
+  duration_ms: 54.099917
+  type: 'test'
+  ...
+# Subtest: invalid configured token fails closed instead of accepting a short secret
+ok 34 - invalid configured token fails closed instead of accepting a short secret
+  ---
+  duration_ms: 0.093459
+  type: 'test'
+  ...
+# Subtest: CLI parsing requires both approval flags, absolute files, and the fixed port
+ok 35 - CLI parsing requires both approval flags, absolute files, and the fixed port
+  ---
+  duration_ms: 0.401083
+  type: 'test'
+  ...
+# Subtest: Docker host URL rejects public endpoints, plaintext, credentials, query and alternate paths
+ok 36 - Docker host URL rejects public endpoints, plaintext, credentials, query and alternate paths
+  ---
+  duration_ms: 0.445958
+  type: 'test'
+  ...
+# Subtest: supplied CA cannot be symlinked or writable by other users before any credential is read
+ok 37 - supplied CA cannot be symlinked or writable by other users before any credential is read
+  ---
+  duration_ms: 9.064375
+  type: 'test'
+  ...
+# Subtest: host transport uses fixed reads, private CA, TLS authorization and no credential in body
+ok 38 - host transport uses fixed reads, private CA, TLS authorization and no credential in body
+  ---
+  duration_ms: 0.851541
+  type: 'test'
+  ...
+# Subtest: host client rejects writes and malformed/errors before state can be exposed
+ok 39 - host client rejects writes and malformed/errors before state can be exposed
+  ---
+  duration_ms: 0.218833
+  type: 'test'
+  ...
+# Subtest: actual MCP stdio handshake, tool schemas, safe reads and synthetic event search
+ok 40 - actual MCP stdio handshake, tool schemas, safe reads and synthetic event search
+  ---
+  duration_ms: 111.290208
+  type: 'test'
+  ...
+# Subtest: MCP default deny all refuses accessory access
+ok 41 - MCP default deny all refuses accessory access
+  ---
+  duration_ms: 83.863542
+  type: 'test'
+  ...
+# Subtest: native launch cannot happen without explicit native flag, config and executable
+ok 42 - native launch cannot happen without explicit native flag, config and executable
+  ---
+  duration_ms: 71.221125
+  type: 'test'
+  ...
+# Subtest: private transport correlates split frames and strips inherited secrets
+ok 43 - private transport correlates split frames and strips inherited secrets
+  ---
+  duration_ms: 153.284291
+  type: 'test'
+  ...
+# Subtest: malformed or oversized helper output fails closed
+ok 44 - malformed or oversized helper output fails closed
+  ---
+  duration_ms: 225.848334
+  type: 'test'
+  ...
+# Subtest: helper timeout terminates a stuck process even when it ignores SIGTERM
+ok 45 - helper timeout terminates a stuck process even when it ignores SIGTERM
+  ---
+  duration_ms: 2088.34375
+  type: 'test'
+  ...
+# Subtest: concurrent read is refused instead of timing out behind native serial queue
+ok 46 - concurrent read is refused instead of timing out behind native serial queue
+  ---
+  duration_ms: 212.922917
+  type: 'test'
+  ...
+# Subtest: native error codes are safe and household messages are not forwarded
+ok 47 - native error codes are safe and household messages are not forwarded
+  ---
+  duration_ms: 109.066209
+  type: 'test'
+  ...
+# Subtest: synthetic occupancy is labelled and never identifies a person
+ok 48 - synthetic occupancy is labelled and never identifies a person
+  ---
+  duration_ms: 2.837959
+  type: 'test'
+  ...
+# Subtest: missing, stale, and future readings yield unknown occupancy
+ok 49 - missing, stale, and future readings yield unknown occupancy
+  ---
+  duration_ms: 0.185416
+  type: 'test'
+  ...
+# Subtest: motion inactivity cannot prove an empty room; explicit occupancy clear can
+ok 50 - motion inactivity cannot prove an empty room; explicit occupancy clear can
+  ---
+  duration_ms: 0.116125
+  type: 'test'
+  ...
+# Subtest: newest reading per sensor wins and fresh positive readings are conservative
+ok 51 - newest reading per sensor wins and fresh positive readings are conservative
+  ---
+  duration_ms: 0.0835
+  type: 'test'
+  ...
+# Subtest: occupancy freshness describes its evidence, not a newer unknown reading
+ok 52 - occupancy freshness describes its evidence, not a newer unknown reading
+  ---
+  duration_ms: 0.118334
+  type: 'test'
+  ...
+# Subtest: contradictory equal-time occupancy readings remain unknown regardless of order
+ok 53 - contradictory equal-time occupancy readings remain unknown regardless of order
+  ---
+  duration_ms: 0.147334
+  type: 'test'
+  ...
+# Subtest: latest readings follow a signal across rooms instead of reviving old occupancy
+ok 54 - latest readings follow a signal across rooms instead of reviving old occupancy
+  ---
+  duration_ms: 0.049708
+  type: 'test'
+  ...
+# Subtest: named-person location is unavailable by default and without signal-specific consent
+ok 55 - named-person location is unavailable by default and without signal-specific consent
+  ---
+  duration_ms: 0.182125
+  type: 'test'
+  ...
+# Subtest: explicit active consent enables only a current device/sensor presence indication
+ok 56 - explicit active consent enables only a current device/sensor presence indication
+  ---
+  duration_ms: 0.228375
+  type: 'test'
+  ...
+# Subtest: presence collected before consent is not reused for location
+ok 57 - presence collected before consent is not reused for location
+  ---
+  duration_ms: 0.283959
+  type: 'test'
+  ...
+# Subtest: person location freshness describes present evidence rather than a newer absent device
+ok 58 - person location freshness describes present evidence rather than a newer absent device
+  ---
+  duration_ms: 0.110417
+  type: 'test'
+  ...
+# Subtest: revoked, expired, and future consent do not grant access
+ok 59 - revoked, expired, and future consent do not grant access
+  ---
+  duration_ms: 0.068667
+  type: 'test'
+  ...
+# Subtest: camera-based person identification is rejected even when consent is supplied
+ok 60 - camera-based person identification is rejected even when consent is supplied
+  ---
+  duration_ms: 0.0375
+  type: 'test'
+  ...
+# Subtest: stale or conflicting person presence is unavailable, never guessed
+ok 61 - stale or conflicting person presence is unavailable, never guessed
+  ---
+  duration_ms: 0.105417
+  type: 'test'
+  ...
+# Subtest: a single device with contradictory equal-time room readings is unavailable
+ok 62 - a single device with contradictory equal-time room readings is unavailable
+  ---
+  duration_ms: 0.068
+  type: 'test'
+  ...
+# Subtest: latest absent reading removes an earlier location and clock skew is unavailable
+ok 63 - latest absent reading removes an earlier location and clock skew is unavailable
+  ---
+  duration_ms: 0.0515
+  type: 'test'
+  ...
+# Subtest: recovery keeps only authenticated finalized media with committed metadata and index searchable
+ok 64 - recovery keeps only authenticated finalized media with committed metadata and index searchable
+  ---
+  duration_ms: 1.01675
+  type: 'test'
+  ...
+# Subtest: power failure during temporary write discards only that owned bundle and marks interruption through restart
+ok 65 - power failure during temporary write discards only that owned bundle and marks interruption through restart
+  ---
+  duration_ms: 0.23225
+  type: 'test'
+  ...
+# Subtest: crash after durable finalization but before index commit schedules authenticated reindex then idempotent keep
+ok 66 - crash after durable finalization but before index commit schedules authenticated reindex then idempotent keep
+  ---
+  duration_ms: 0.159
+  type: 'test'
+  ...
+# Subtest: missing media removes dangling index and sidecars without pretending history is empty
+ok 67 - missing media removes dangling index and sidecars without pretending history is empty
+  ---
+  duration_ms: 0.198792
+  type: 'test'
+  ...
+# Subtest: corrupt integrity or missing authenticated metadata quarantines in place without publishing or copying media
+ok 68 - corrupt integrity or missing authenticated metadata quarantines in place without publishing or copying media
+  ---
+  duration_ms: 0.22975
+  type: 'test'
+  ...
+# Subtest: a durably acknowledged in-place quarantine stays unavailable without blocking capture forever
+ok 69 - a durably acknowledged in-place quarantine stays unavailable without blocking capture forever
+  ---
+  duration_ms: 0.080542
+  type: 'test'
+  ...
+# Subtest: future, corrupt, oversized, mismatched and unsafe recovery entries fail closed without action targets
+ok 70 - future, corrupt, oversized, mismatched and unsafe recovery entries fail closed without action targets
+  ---
+  duration_ms: 0.231625
+  type: 'test'
+  ...
+# Subtest: incomplete scans, symlink uncertainty, duplicate entries, overflow and foreign namespaces block recovery
+ok 71 - incomplete scans, symlink uncertainty, duplicate entries, overflow and foreign namespaces block recovery
+  ---
+  duration_ms: 0.131083
+  type: 'test'
+  ...
+# Subtest: NAS outage permits only an already bounded local spool with no growth in configured cap
+ok 72 - NAS outage permits only an already bounded local spool with no growth in configured cap
+  ---
+  duration_ms: 0.647375
+  type: 'test'
+  ...
+# Subtest: at the local cap capture stops and marks a gap; no automatic deletion policy is applied
+ok 73 - at the local cap capture stops and marks a gap; no automatic deletion policy is applied
+  ---
+  duration_ms: 2.055167
+  type: 'test'
+  ...
+# Subtest: exactly fitting the cap works; transfer duplication, logs and temporary files count toward it
+ok 74 - exactly fitting the cap works; transfer duplication, logs and temporary files count toward it
+  ---
+  duration_ms: 5.717916
+  type: 'test'
+  ...
+# Subtest: free disk reserve stops before allocating even when eviction could hypothetically reclaim bytes
+ok 75 - free disk reserve stops before allocating even when eviction could hypothetically reclaim bytes
+  ---
+  duration_ms: 0.132792
+  type: 'test'
+  ...
+# Subtest: expired local spool requires reconciliation and explicit eviction rather than silently keeping stale data
+ok 76 - expired local spool requires reconciliation and explicit eviction rather than silently keeping stale data
+  ---
+  duration_ms: 0.113958
+  type: 'test'
+  ...
+# Subtest: draft local spool is 20 decimal GB and every policy above the hard 50GB ceiling is rejected
+ok 77 - draft local spool is 20 decimal GB and every policy above the hard 50GB ceiling is rejected
+  ---
+  duration_ms: 0.072417
+  type: 'test'
+  ...
+# Subtest: unbounded/oversized segments, impossible disk facts and corrupt inventories stop the spool
+ok 78 - unbounded/oversized segments, impossible disk facts and corrupt inventories stop the spool
+  ---
+  duration_ms: 0.089125
+  type: 'test'
+  ...
+# Subtest: retention age boundary evicts the whole bundle including thumbnail, index and metadata
+ok 79 - retention age boundary evicts the whole bundle including thumbnail, index and metadata
+  ---
+  duration_ms: 2.200875
+  type: 'test'
+  ...
+# Subtest: total quota evicts oldest first regardless of inventory order, including pending budget
+ok 80 - total quota evicts oldest first regardless of inventory order, including pending budget
+  ---
+  duration_ms: 0.240125
+  type: 'test'
+  ...
+# Subtest: temporary files and logs have independent age and byte bounds included in total bytes
+ok 81 - temporary files and logs have independent age and byte bounds included in total bytes
+  ---
+  duration_ms: 10.27125
+  type: 'test'
+  ...
+# Subtest: pending temporary and log writes reserve their own subquota before capture is allowed
+ok 82 - pending temporary and log writes reserve their own subquota before capture is allowed
+  ---
+  duration_ms: 0.273875
+  type: 'test'
+  ...
+# Subtest: free disk reserve triggers oldest-first reclamation even below total quota
+ok 83 - free disk reserve triggers oldest-first reclamation even below total quota
+  ---
+  duration_ms: 0.140542
+  type: 'test'
+  ...
+# Subtest: capture stops when even removing every owned record cannot preserve disk reserve
+ok 84 - capture stops when even removing every owned record cannot preserve disk reserve
+  ---
+  duration_ms: 0.169
+  type: 'test'
+  ...
+# Subtest: an impossible pending write stops without evicting otherwise valid records to make room
+ok 85 - an impossible pending write stops without evicting otherwise valid records to make room
+  ---
+  duration_ms: 0.146
+  type: 'test'
+  ...
+# Subtest: no write budget means capture is stopped while cleanup can still be previewed
+ok 86 - no write budget means capture is stopped while cleanup can still be previewed
+  ---
+  duration_ms: 0.0625
+  type: 'test'
+  ...
+# Subtest: future or corrupt records fail closed with no deletion plan
+ok 87 - future or corrupt records fail closed with no deletion plan
+  ---
+  duration_ms: 0.280417
+  type: 'test'
+  ...
+# Subtest: absolute, traversal, foreign-bundle, encoded, nested and Windows paths cannot be deletion targets
+ok 88 - absolute, traversal, foreign-bundle, encoded, nested and Windows paths cannot be deletion targets
+  ---
+  duration_ms: 0.326709
+  type: 'test'
+  ...
+# Subtest: symlinks, special files, unverified ancestors, foreign namespace and incomplete scans fail closed
+ok 89 - symlinks, special files, unverified ancestors, foreign namespace and incomplete scans fail closed
+  ---
+  duration_ms: 0.11475
+  type: 'test'
+  ...
+# Subtest: duplicate bundles and members and missing/multiple primary files are invalid
+ok 90 - duplicate bundles and members and missing/multiple primary files are invalid
+  ---
+  duration_ms: 0.062083
+  type: 'test'
+  ...
+# Subtest: integer overflow, huge inventories and large per-bundle lists are bounded
+ok 91 - integer overflow, huge inventories and large per-bundle lists are bounded
+  ---
+  duration_ms: 0.079625
+  type: 'test'
+  ...
+# Subtest: policy, clock, disk and pending input validation stop capture without deletions
+ok 92 - policy, clock, disk and pending input validation stop capture without deletions
+  ---
+  duration_ms: 0.093959
+  type: 'test'
+  ...
+# Subtest: planner is deterministic and does not mutate inventory, policy or caller-owned arrays
+ok 93 - planner is deterministic and does not mutate inventory, policy or caller-owned arrays
+  ---
+  duration_ms: 0.418959
+  type: 'test'
+  ...
+1..93
+# tests 93
+# suites 0
+# pass 93
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2897.425709

@@ -1,0 +1,8 @@
+# Review before adding to a LOCAL client's scoped configuration. Nothing has been installed.
+# Native profile needs a signed/provisioned app, explicit access approval and accessory allowlist.
+[mcp_servers.homekit_own_mock]
+enabled = false
+command = "node"
+args = ["/absolute/path/to/homekit-mcp/dist/src/index.js","--mode","mock","--config","/absolute/path/to/homekit-mcp/config/mock.json"]
+startup_timeout_sec = 15
+tool_timeout_sec = 60

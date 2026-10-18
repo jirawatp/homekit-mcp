@@ -1,0 +1,70 @@
+name: homekit-mcp
+
+x-runtime: &runtime
+  image: homekit-mcp:local
+  build:
+    context: .
+    target: runtime
+  init: true
+  stdin_open: true
+  tty: false
+  read_only: true
+  user: "1000:1000"
+  cap_drop: [ALL]
+  security_opt: [no-new-privileges:true]
+  mem_limit: 192m
+  memswap_limit: 192m
+  cpus: 0.50
+  pids_limit: 64
+  tmpfs:
+    - /tmp:rw,noexec,nosuid,nodev,size=16m,mode=1777
+  restart: "no"
+  logging:
+    driver: local
+    options:
+      max-size: "1m"
+      max-file: "2"
+
+services:
+  mock:
+    <<: *runtime
+    network_mode: none
+    command: ["--mode", "mock", "--config", "/app/config/mock.json"]
+
+  # Opt-in only. Do not start until the user approves access and the native app,
+  # TLS certificate, token and read-only accessory allowlist are ready.
+  host:
+    <<: *runtime
+    profiles: [host]
+    user: "${HOMEKIT_RUN_UID:-1000}:${HOMEKIT_RUN_GID:-1000}"
+    command:
+      - --mode
+      - host
+      - --host-user-approved
+      - --config
+      - /run/homekit/config.json
+      - --host-bridge-url
+      - https://host.docker.internal:18443/bridge
+      - --host-bridge-ca
+      - /run/homekit/ca.pem
+      - --host-bridge-token
+      - /run/homekit/token
+    volumes:
+      - type: bind
+        source: ${HOMEKIT_ACCESS_CONFIG:-./config/homekit.local.json}
+        target: /run/homekit/config.json
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ${HOMEKIT_BRIDGE_CA:-./config/host/ca.pem}
+        target: /run/homekit/ca.pem
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ${HOMEKIT_BRIDGE_TOKEN:-./config/host/token}
+        target: /run/homekit/token
+        read_only: true
+        bind:
+          create_host_path: false
