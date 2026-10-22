@@ -5,6 +5,10 @@
 !package.json
 !package-lock.json
 !tsconfig.json
+!.c8rc.json
+!scripts/
+scripts/*
+!scripts/coverage-inventory.mjs
 !src/
 !src/**
 !test/

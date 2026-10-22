@@ -4,10 +4,12 @@
   "private": true,
   "description": "Original local read-only HomeKit MCP with a gated Swift Mac Catalyst bridge",
   "type": "module",
-  "engines": { "node": ">=22.19.0" },
+  "engines": {
+    "node": ">=22.19.0"
+  },
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "test": "npm run build && node --test dist/test/*.test.js",
+    "test": "npm run test:coverage",
     "start": "node dist/src/index.js",
     "smoke": "npm run build && node scripts/smoke.mjs",
     "smoke:native": "npm run build && node scripts/smoke-native-fixture.mjs",
@@ -15,9 +17,13 @@
     "host-gateway": "node dist/src/host-gateway.js",
     "build:native": "bash scripts/build-native.sh",
     "test:native": "bash scripts/test-native.sh",
+    "coverage:native": "bash scripts/coverage-native.sh",
+    "test:gates": "node --test scripts/native-coverage-check.test.mjs scripts/coverage-native.test.mjs",
     "doctor": "node scripts/doctor.mjs",
     "client-config": "node scripts/client-config.mjs",
-    "test:all": "npm test && npm run test:native && node scripts/smoke-native-fixture.mjs && npm run build:native"
+    "test:all": "npm test && npm run test:gates && npm run coverage:native && node scripts/smoke-native-fixture.mjs && npm run build:native",
+    "test:unit": "npm run build && node --test dist/test/*.test.js",
+    "test:coverage": "npm run build && c8 node --test dist/test/*.test.js && node scripts/coverage-inventory.mjs"
   },
   "dependencies": {
     "@modelcontextprotocol/server": "2.3.1",
@@ -26,6 +32,7 @@
   "devDependencies": {
     "@modelcontextprotocol/client": "2.3.1",
     "@types/node": "22.20.5",
+    "c8": "12.0.0",
     "typescript": "7.0.2"
   }
 }

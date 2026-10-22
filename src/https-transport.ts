@@ -18,12 +18,29 @@ export function validateHostBridgeUrl(value: string): URL {
   return url;
 }
 
-async function readBounded(path: string, maxBytes: number, privateFile: boolean): Promise<string> {
-  const handle = await open(path, constants.O_RDONLY | constants.O_NOFOLLOW | constants.O_NONBLOCK);
+/** File access seam so growth-after-stat and ownership branches can be tested without real credentials. */
+export interface BoundedFileAccess {
+  open(path: string): Promise<{
+    stat(): Promise<{ isFile(): boolean; size: number; uid: number; mode: number }>;
+    read(buffer: Buffer, offset: number, length: number, position: number): Promise<{ bytesRead: number }>;
+    close(): Promise<void>;
+  }>;
+  uid: number | undefined;
+}
+
+const defaultFileAccess: BoundedFileAccess = {
+  open: path => open(path, constants.O_RDONLY | constants.O_NOFOLLOW | constants.O_NONBLOCK),
+  uid: process.getuid?.(),
+};
+
+export async function readBounded(
+  path: string, maxBytes: number, privateFile: boolean, files: BoundedFileAccess = defaultFileAccess,
+): Promise<string> {
+  const handle = await files.open(path);
   try {
     const stat = await handle.stat();
     if (!stat.isFile() || stat.size > maxBytes) throw new BridgeError('HOST_BRIDGE_FILE_REFUSED');
-    if (privateFile && ((stat.mode & 0o077) !== 0 || stat.uid !== process.getuid?.() || (stat.mode & 0o400) === 0)) {
+    if (privateFile && ((stat.mode & 0o077) !== 0 || stat.uid !== files.uid || (stat.mode & 0o400) === 0)) {
       throw new BridgeError('HOST_BRIDGE_PRIVATE_FILE_PERMISSIONS');
     }
     if (!privateFile && (stat.mode & 0o022) !== 0) throw new BridgeError('HOST_BRIDGE_CA_FILE_PERMISSIONS');
@@ -47,31 +64,41 @@ export async function loadHttpsBridgeTransport(url: string, caPath: string, toke
   return new HttpsBridgeTransport({ url, ca, token });
 }
 
-const performRequest: HostRequester = ({ url, ca, token, body, signal }) => new Promise((resolve, reject) => {
-  const request = https.request(url, { method: 'POST', ca, rejectUnauthorized: true, minVersion: 'TLSv1.3', signal,
-    headers: { authorization: `Bearer ${token}`, 'content-type': 'application/json',
-      'content-length': Buffer.byteLength(body), connection: 'close' } }, response => {
-    if (response.statusCode !== 200 || !response.headers['content-type']?.startsWith('application/json')) {
-      response.destroy(); request.destroy(); reject(new BridgeError('HOST_BRIDGE_REQUEST_REFUSED')); return;
-    }
-    const chunks: Buffer[] = [];
-    let bytes = 0;
-    response.on('data', (chunk: Buffer) => {
-      bytes += chunk.length;
-      if (bytes > 1024 * 1024) {
-        response.destroy(); request.destroy(); reject(new BridgeError('HOST_BRIDGE_FRAME_TOO_LARGE')); return;
+/** The response-size ceiling for one bridge reply. */
+const MAX_RESPONSE_BYTES = 1024 * 1024;
+
+/** Builds the TLS requester. The request factory is injectable so every protocol branch runs in memory. */
+export function createHostRequester(requestFactory: typeof https.request = https.request): HostRequester {
+  return ({ url, ca, token, body, signal }) => new Promise((resolve, reject) => {
+    const request = requestFactory(url, { method: 'POST', ca, rejectUnauthorized: true, minVersion: 'TLSv1.3', signal,
+      headers: { authorization: `Bearer ${token}`, 'content-type': 'application/json',
+        'content-length': Buffer.byteLength(body), connection: 'close' } }, response => {
+      if (response.statusCode !== 200 || !response.headers['content-type']?.startsWith('application/json')) {
+        response.destroy(); request.destroy(); reject(new BridgeError('HOST_BRIDGE_REQUEST_REFUSED')); return;
       }
-      chunks.push(chunk);
+      const chunks: Buffer[] = [];
+      let bytes = 0;
+      response.on('data', (chunk: Buffer) => {
+        bytes += chunk.length;
+        if (bytes > MAX_RESPONSE_BYTES) {
+          response.destroy(); request.destroy(); reject(new BridgeError('HOST_BRIDGE_FRAME_TOO_LARGE')); return;
+        }
+        chunks.push(chunk);
+      });
+      response.on('error', () => reject(new BridgeError('HOST_BRIDGE_IO_ERROR')));
+      // Defense in depth: Node's HTTP parser already errors on truncated bodies, but a close without 'end' must never wait for the timeout.
+      response.on('close', () => reject(new BridgeError('HOST_BRIDGE_IO_ERROR')));
+      response.on('end', () => {
+        try { resolve(JSON.parse(Buffer.concat(chunks).toString('utf8'))); }
+        catch { reject(new BridgeError('HOST_BRIDGE_PROTOCOL_ERROR')); }
+      });
     });
-    response.on('error', () => reject(new BridgeError('HOST_BRIDGE_IO_ERROR')));
-    response.on('end', () => {
-      try { resolve(JSON.parse(Buffer.concat(chunks).toString('utf8'))); }
-      catch { reject(new BridgeError('HOST_BRIDGE_PROTOCOL_ERROR')); }
-    });
+    request.on('error', () => reject(new BridgeError('HOST_BRIDGE_UNAVAILABLE')));
+    request.end(body);
   });
-  request.on('error', () => reject(new BridgeError('HOST_BRIDGE_UNAVAILABLE')));
-  request.end(body);
-});
+}
+
+const performRequest: HostRequester = createHostRequester();
 
 /** Optional local Docker-to-Mac client. No requests occur until a read is called. */
 export class HttpsBridgeTransport implements BridgeTransport {

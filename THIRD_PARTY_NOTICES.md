@@ -11,6 +11,7 @@ Pinned direct dependencies:
 | `@modelcontextprotocol/client` | 2.3.1 | Apache-2.0 | Development/smoke client |
 | `typescript` | 7.0.2 | Apache-2.0 | Compiler |
 | `@types/node` | 22.20.5 | MIT | Development type declarations |
+| `c8` | 12.0.0 | ISC | Development-only V8 coverage enforcement |
 
 `package-lock.json` pins the full dependency graph. Upstream license and attribution files remain in installed packages. A release or redistribution package needs a separate review of direct/transitive notices and the selected product license. Apple's frameworks and developer tooling retain their applicable platform/toolchain terms; this work did not accept any new terms.
 

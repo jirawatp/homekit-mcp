@@ -6,10 +6,10 @@ import UIKit
 /// HMHomeManager is constructed only by the user's visible Enable button action.
 @MainActor final class HomeKitController: NSObject, @preconcurrency HMHomeManagerDelegate {
     private var manager: HMHomeManager?
-    private(set) var session = ReadOnlySession()
-    private var valueCache: [UUID: (JSONValue, String)] = [:]
-    private var generation: UInt64 = 0
-    private var hasLoadedHomes = false
+    /// Lifecycle, generation and cache rules live in the Foundation-only (tested) coordinator; this class
+    /// only owns the HomeKit objects and reports facts to it.
+    private var coordinator = SessionCoordinator()
+    var session: ReadOnlySession { coordinator.session }
     private(set) var configURL: URL?
     private var securityScopedURL: URL?
     var changed: (() -> Void)?
@@ -22,14 +22,16 @@ import UIKit
     }
 
     func reloadConfiguration() {
-        generation &+= 1
-        // A failed reload revokes all previously allowed accessories immediately.
-        session.configuration = .denyAll
         configurationError = nil
-        guard let configURL else { configurationError = "No --config path supplied. All accessories are denied."; changed?(); return }
-        do { session.configuration = try BridgeConfiguration.load(from: configURL) }
-        catch { configurationError = "Invalid or unreadable configuration. All accessories are denied." }
-        valueCache.removeAll()
+        var loaded: BridgeConfiguration?
+        if let configURL {
+            do { loaded = try BridgeConfiguration.load(from: configURL) }
+            catch { configurationError = "Invalid or unreadable configuration. All accessories are denied." }
+        } else {
+            configurationError = "No --config path supplied. All accessories are denied."
+        }
+        // A failed reload (nil) revokes all previously allowed accessories immediately.
+        coordinator.reloadConfiguration(loaded)
         changed?()
     }
 
@@ -43,33 +45,25 @@ import UIKit
 
     /// This method is never exposed over stdio.
     func enableFromUserAction() {
-        generation &+= 1
-        guard manager == nil else { session.enabled = true; updateAuthorization(); return }
-        hasLoadedHomes = false
-        session.enabled = true
-        session.authorization = .unknown
-        let newManager = HMHomeManager() // The sole HomeKit authorization-triggering line.
-        manager = newManager
-        newManager.delegate = self
+        let managerExists = manager != nil
+        coordinator.enable(managerExists: managerExists)
+        if !managerExists {
+            let newManager = HMHomeManager() // The sole HomeKit authorization-triggering line.
+            manager = newManager
+            newManager.delegate = self
+        }
         updateAuthorization()
     }
 
     func disableFromUserAction() {
-        generation &+= 1
-        hasLoadedHomes = false
-        session.enabled = false
-        session.homesReady = false
+        coordinator.disable()
         manager?.delegate = nil
         manager = nil
-        valueCache.removeAll()
         changed?()
     }
 
     func homeManagerDidUpdateHomes(_ manager: HMHomeManager) {
-        guard manager === self.manager, session.enabled else { return }
-        generation &+= 1
-        hasLoadedHomes = true
-        valueCache.removeAll()
+        guard manager === self.manager, coordinator.homesDidUpdate() else { return }
         updateAuthorization()
     }
 
@@ -79,24 +73,16 @@ import UIKit
     }
 
     private func updateAuthorization() {
-        guard let manager else { session.authorization = .notRequested; changed?(); return }
-        let previous = session.authorization
+        guard let manager else { coordinator.applyAuthorization(nil); changed?(); return }
         let status = manager.authorizationStatus
-        if status.contains(.restricted) { session.authorization = .restricted }
-        else if status.contains(.authorized) { session.authorization = .authorized }
-        else if status.contains(.determined) { session.authorization = .denied }
-        else { session.authorization = .notRequested }
-        session.homesReady = hasLoadedHomes && session.authorization == .authorized
-        if session.authorization != .authorized {
-            valueCache.removeAll()
-            if previous == .authorized {
-                generation &+= 1
-                session.enabled = false
-                session.homesReady = false
-                hasLoadedHomes = false
-                manager.delegate = nil
-                self.manager = nil
-            }
+        let observed: Authorization
+        if status.contains(.restricted) { observed = .restricted }
+        else if status.contains(.authorized) { observed = .authorized }
+        else if status.contains(.determined) { observed = .denied }
+        else { observed = .notRequested }
+        if coordinator.applyAuthorization(observed) == .releaseManager {
+            manager.delegate = nil
+            self.manager = nil
         }
         changed?()
     }
@@ -132,12 +118,12 @@ import UIKit
         guard request.command == "read_accessory", let accessory = allowed.first else {
             reply(session.process(request, accessories: allowed.map(snapshot))); return
         }
-        let requestGeneration = generation
-        refresh(accessory, generation: requestGeneration) { [weak self] in
+        let requestToken = coordinator.readToken
+        refresh(accessory, token: requestToken) { [weak self] in
             guard let self else { return }
             // Recheck authorization/allowlist after asynchronous reads (revocation can occur mid-flight).
             self.updateAuthorization()
-            guard requestGeneration == self.generation else {
+            guard self.coordinator.isCurrent(requestToken) else {
                 reply(.failure(request.id, BridgeError("session_changed", "Session, home data or allowlist changed during the read.")))
                 return
             }
@@ -149,32 +135,29 @@ import UIKit
         }
     }
 
-    private func refresh(_ accessory: HMAccessory, generation requestGeneration: UInt64, completion: @escaping () -> Void) {
+    private func refresh(_ accessory: HMAccessory, token: UInt64, completion: @escaping () -> Void) {
         let characteristics = accessory.services.filter { SafeReadPolicy.allowsService($0.serviceType) }.flatMap(\.characteristics).filter {
             $0.properties.contains(HMCharacteristicPropertyReadable) && SafeReadPolicy.allowsCharacteristic($0.characteristicType)
         }
-        for characteristic in characteristics { valueCache.removeValue(forKey: characteristic.uniqueIdentifier) }
-        guard characteristics.count <= 256 else { completion(); return }
-        var remaining = characteristics.count
-        guard remaining > 0 else { completion(); return }
-        var finished = false
-        let finish = {
-            guard !finished else { return }
-            finished = true
-            completion()
+        let identifiers = characteristics.map(\.uniqueIdentifier)
+        coordinator.invalidateObservations(for: identifiers)
+        // The tracker guarantees `completion` runs exactly once: from the last expected read or the deadline.
+        var tracker = RefreshTracker(expecting: identifiers)
+        guard !tracker.isFinished else { completion(); return }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            if tracker.expire() == .complete { completion() }
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) { finish() }
         for characteristic in characteristics {
             characteristic.readValue { [weak self] error in
                 DispatchQueue.main.async {
-                    guard let self, !finished else { return }
-                    if error == nil, self.generation == requestGeneration, self.session.enabled, self.session.authorization == .authorized,
-                       self.session.configuration.allows(accessory.uniqueIdentifier.uuidString),
-                       let value = Self.scalarValue(characteristic.value) {
-                        self.valueCache[characteristic.uniqueIdentifier] = (value, timestamp())
+                    guard let self else { return }
+                    let step = tracker.characteristicRead(characteristic.uniqueIdentifier)
+                    guard step != .ignored else { return }
+                    if error == nil, let value = Self.scalarValue(characteristic.value) {
+                        self.coordinator.record(value, observedAt: timestamp(), for: characteristic.uniqueIdentifier,
+                                                accessoryId: accessory.uniqueIdentifier.uuidString, token: token)
                     }
-                    remaining -= 1
-                    if remaining == 0 { finish() }
+                    if step == .complete { completion() }
                 }
             }
         }
@@ -201,9 +184,9 @@ import UIKit
                 guard !characteristics.isEmpty else { return nil }
                 return ServiceSnapshot(id: service.uniqueIdentifier.uuidString, type: service.serviceType, name: service.name,
                     characteristics: characteristics.map { characteristic in
-                    let cached = valueCache[characteristic.uniqueIdentifier]
+                    let cached = coordinator.observation(for: characteristic.uniqueIdentifier)
                     return CharacteristicSnapshot(id: characteristic.uniqueIdentifier.uuidString, type: characteristic.characteristicType,
-                        value: cached?.0, readable: true, observedAt: cached?.1 ?? now)
+                        value: cached?.value, readable: true, observedAt: cached?.observedAt ?? now)
                 })
             }, containsCamera: isCamera(accessory))
     }

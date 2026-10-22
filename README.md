@@ -28,12 +28,12 @@ Requires Node 22.19+; native builds additionally need full Xcode on a Mac. Publi
 npm ci --ignore-scripts
 npm test
 npm run smoke
-npm run test:native
+npm run coverage:native
 npm run smoke:native
 npm run build:native
 ```
 
-`smoke` creates an ephemeral SDK client and server using synthetic fixtures. `test:native` builds/tests Foundation-only code with no HomeKit import. `smoke:native` connects TypeScript to that Swift fixture while keeping stdin open. `build:native` compiles the real app **without launching it**. None of these commands discovers your home, records cameras, opens a listening port or changes client configuration.
+`smoke` creates an ephemeral SDK client and server using synthetic fixtures. `npm test` builds, runs all TypeScript tests and enforces the coverage gate below. `test:native` builds/tests Foundation-only code with no HomeKit import; `coverage:native` runs the same tests with native coverage and its own gate. `smoke:native` connects TypeScript to that Swift fixture while keeping stdin open. `build:native` compiles the real app **without launching it**. None of these commands discovers your home, records cameras, opens a listening port or changes client configuration.
 
 To run STDIO manually for a compatible **local** client:
 
@@ -42,6 +42,16 @@ node dist/src/index.js --mode mock --config config/mock.json
 ```
 
 STDOUT is protocol-only. Without `--config`, the accessory allowlist is empty. Synthetic camera/presence demos are always labelled `simulated: true`. They contain no household data, camera URL or image.
+
+## Quality gate and coverage
+
+`npm test` (also `npm run test:coverage`) builds the project, runs every test under `c8`, enforces **at least 90% statements, branches, functions and lines**, then runs `scripts/coverage-inventory.mjs`. `.c8rc.json` measures `dist/src/**/*.js` with `all: true` and remaps through source maps to the TypeScript, so unloaded modules and entrypoints are counted. There are no exclusions. The thresholds are global across all source (deliberately no per-file thresholds); the inventory script also fails if any `src/**/*.ts` file is missing from the report. CI (`.github/workflows/ci.yml`) and the Docker build stage run the same gate, and CI proves the gate can fail by reusing the existing coverage data with `npx --no c8 report --lines 101` (no second suite run). c8 derives statement and line figures from the same V8 block ranges (line counts include non-executable physical lines inside them), so those two coincide and are not independent evidence; branches and functions are the independent measures.
+
+Measured (146 TypeScript tests; all 14 production files in `src/`): statements 100% (1974/1974), branches 98.26% (1017/1035), functions 100% (120/120), lines 100% (1974/1974). Per-file figures are in the [validation record](docs/validation.md#coverage-scope-and-results).
+
+Tests use in-memory fakes for the HTTPS gateway (file, TLS, server and bridge seams), the HTTPS client's request layer and the process lifecycle, plus synthetic subprocess fixtures. No real credential, certificate, listener or HomeKit access is created; a few tests write harmless synthetic temp files (symlinks, a FIFO, token-format strings) and run bounded `node` child processes, then delete them. Real TLS certificates and a real Docker-to-Mac route remain unproven.
+
+Native: `npm run coverage:native` runs the Foundation-only SwiftPM tests with `--enable-code-coverage` and gates `native/Sources/BridgeCore` (three files) at 90% for the metrics LLVM reports for Swift: lines, functions and regions (LLVM reports no branch metric for Swift, so none is claimed). Measured in the 2026-10-22 consolidated run (82 Swift tests passing): global lines 98.65% (437/443), functions 97.80% (89/91), regions 94.88% (278/293); per-file regions: `BridgeCore.swift` 94.27%, `SessionCoordinator.swift` 100%, `StdioServer.swift` 93.62%. The gate is global. **This does not cover the Mac Catalyst app** (`native/Sources/Helper`: `App.swift`, `HomeKitController.swift`), the fixture executable, or any real HomeKit or hardware behavior; that app was only compiled unsigned and never launched. See the [validation record](docs/validation.md) for dated results.
 
 ## Tools
 

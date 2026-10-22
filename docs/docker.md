@@ -34,7 +34,7 @@ node scripts/smoke-docker.mjs
 ```
 
 The build uses the committed npm lock with `npm ci --ignore-scripts`, compiles
-TypeScript, and runs the synthetic Node test suite. The final image contains only
+TypeScript, and runs the synthetic Node test suite under the same 90% coverage gate as `npm test` (`.c8rc.json` and the inventory script are in the build context allowlist; this stage has not been executed here because no Docker engine was started). The final image contains only
 production npm dependencies, compiled application code, package metadata, and
 the mock allowlist. Swift, signing assets, household configuration, certificates,
 tokens, tests, and local media are excluded from the final image. The build
