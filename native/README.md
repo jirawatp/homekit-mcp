@@ -11,4 +11,4 @@ bash scripts/build-native.sh
 bash scripts/test-native.sh
 ```
 
-The build script compiles the app without provisioning and never launches it. Tests and `BridgeFixture` cannot import HomeKit. The fixture binary is `native/.build/debug/BridgeFixture` (on Apple silicon, its resolved path is under `.build/arm64-apple-macosx/debug/`).
+The build script compiles the app without provisioning and never launches it. Tests and `BridgeFixture` cannot import HomeKit. The fixture binary is `native/.build/debug/BridgeFixture`. With the Swift 6.4 toolchain used here, `.build/debug` is a symlink to `.build/out/Products/Debug`; other toolchains may place products elsewhere (for example under `.build/<triple>/debug`).

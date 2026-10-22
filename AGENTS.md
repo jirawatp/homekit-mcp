@@ -1,5 +1,13 @@
 # Working in this project
 
+## Required Cursor model and quality workflow
+
+The project-scoped `.cursor/rules/project-workflow.mdc` is always active. Use GPT-5.6 Sol (`gpt-5.6-sol`) as planner/designer, Claude Sonnet 5.5 (`claude-sonnet-5-5`, the owner's spelling is "Sonet") as worker, and Claude Opus 5.5 (`claude-opus-5-5`) as reviewer/advisor. Project subagent definitions live in `.cursor/agents/`. Verify actual model execution permission, not only picker visibility; stop and report any block or fallback instead of substituting. Rules do not prove models executed.
+
+Require meaningful >=90% statements, branches, functions and lines for all production TypeScript, including unloaded files, entrypoints and security/error handling. Enforce this in test configuration and CI. Do not lower thresholds or broadly exclude difficult modules. Report native supported metrics with exact source/target scope; Foundation fixture coverage does not establish coverage of the Catalyst app. Complete the plan, worker changes, independent review, reproducible checks and accurate documentation before claiming completion.
+
+## Scope and safety
+
 This is an original HomeKit MCP implementation. Publication as the public GitHub repository `jirawatp/homekit-mcp` is approved. That approval does not select a code license or authorize releases, container-image publication, npm publication, credentials, signing/account changes, network exposure, recording, or persistent access. Do not copy/rebrand reference projects or introduce Home Assistant/vendor camera integrations; the camera layer is HomeKit.
 
 - Read `README.md` and `docs/validation.md` to distinguish implemented, mocked and pending stages.

@@ -22,3 +22,5 @@ examples/*.local.toml
 xcuserdata/
 private-cache/
 logs/
+coverage/
+*.profraw

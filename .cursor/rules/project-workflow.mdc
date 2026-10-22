@@ -1,0 +1,16 @@
+---
+description: Always-active project workflow, requested model roles, coverage and safe testing
+alwaysApply: true
+---
+
+# Required project workflow
+
+- Read AGENTS.md, README.md, design/security/validation documents, git status and relevant history before changes. Preserve existing work, scope and license decisions.
+- Use Cursor with GPT-5.6 Sol (`gpt-5.6-sol`) for planner/designer; Claude Sonnet 5.5 (`claude-sonnet-5-5`) for worker; Claude Opus 5.5 (`claude-opus-5-5`) for reviewer/advisor. The owner's spelling "Sonet 5.5" refers to the exact available Cursor label "Claude Sonnet 5.5".
+- Verify availability AND permission to execute each model. Picker visibility alone is insufficient. Do not use Auto, inherit a different model, accept silent fallback, or claim a role ran without actual execution evidence. If blocked/unavailable, stop dependent work and ask the owner/coordinator for a choice. Do not change team access settings.
+- Keep planner, worker and reviewer responsibilities separate. Plan before implementation; review the final diff and rerun affected checks after fixes. Record actual role/model execution and remaining blockers.
+- Enforce at least 90% statements, branches, functions and lines for all production TypeScript. Include entrypoints and security/error paths. Include unloaded production files. Do not lower thresholds, omit difficult modules, add broad ignores, or write assertions that only mirror implementation to raise numbers.
+- Native code must report all metrics the tool supports with explicit target/source scope. Pure fixture coverage does not prove hardware or Catalyst application coverage. Never combine unrelated coverage totals to hide a gap.
+- Test through synthetic fixtures, in-memory adapters and process mocks. Do not discover/connect to/operate physical equipment, HomeKit devices, locks, doors, cameras or heating without the owner's separate approval of the specific action.
+- Do not create credentials/persistent access, expose network endpoints, publish/push/merge, buy services or accept agreements, unless the user explicitly authorizes that specific external action in the current task. Any such authorization is recorded in the task's audit/handoff history, never in this permanent rule, and it expires with that task. Keep secrets out of output. Work only in this repository: do not change other projects or shared/global clients.
+- Completion requires reproducible setup, passing meaningful tests and coverage enforcement in normal checks/existing CI, a security/error-handling review, and accurate documentation. Rules are instructions, not proof of model routing or test execution.

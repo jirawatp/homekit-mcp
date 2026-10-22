@@ -8,14 +8,16 @@
   A00000000000000000000002 = {isa = PBXBuildFile; fileRef = B00000000000000000000002; };
   A00000000000000000000003 = {isa = PBXBuildFile; fileRef = B00000000000000000000003; };
   A00000000000000000000004 = {isa = PBXBuildFile; fileRef = B00000000000000000000004; };
+  A00000000000000000000005 = {isa = PBXBuildFile; fileRef = B00000000000000000000008; };
   B00000000000000000000001 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/BridgeCore/BridgeCore.swift; sourceTree = "<group>"; };
   B00000000000000000000002 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/BridgeCore/StdioServer.swift; sourceTree = "<group>"; };
   B00000000000000000000003 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/Helper/HomeKitController.swift; sourceTree = "<group>"; };
   B00000000000000000000004 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/Helper/App.swift; sourceTree = "<group>"; };
   B00000000000000000000005 = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Resources/Info.plist; sourceTree = "<group>"; };
   B00000000000000000000006 = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Resources/HomeKitMCPBridge.entitlements; sourceTree = "<group>"; };
+  B00000000000000000000008 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/BridgeCore/SessionCoordinator.swift; sourceTree = "<group>"; };
   B00000000000000000000007 = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HomeKitMCPBridge.app; sourceTree = BUILT_PRODUCTS_DIR; };
-  C00000000000000000000001 = {isa = PBXGroup; children = (B00000000000000000000001, B00000000000000000000002, B00000000000000000000003, B00000000000000000000004, B00000000000000000000005, B00000000000000000000006, C00000000000000000000002); sourceTree = "<group>"; };
+  C00000000000000000000001 = {isa = PBXGroup; children = (B00000000000000000000001, B00000000000000000000002, B00000000000000000000008, B00000000000000000000003, B00000000000000000000004, B00000000000000000000005, B00000000000000000000006, C00000000000000000000002); sourceTree = "<group>"; };
   C00000000000000000000002 = {isa = PBXGroup; children = (B00000000000000000000007); name = Products; sourceTree = "<group>"; };
   D00000000000000000000001 = {
    isa = PBXNativeTarget;
@@ -28,7 +30,7 @@
    productReference = B00000000000000000000007;
    productType = "com.apple.product-type.application";
   };
-  D00000000000000000000002 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (A00000000000000000000001, A00000000000000000000002, A00000000000000000000003, A00000000000000000000004); runOnlyForDeploymentPostprocessing = 0; };
+  D00000000000000000000002 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (A00000000000000000000001, A00000000000000000000002, A00000000000000000000005, A00000000000000000000003, A00000000000000000000004); runOnlyForDeploymentPostprocessing = 0; };
   D00000000000000000000003 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
   D00000000000000000000004 = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
   E00000000000000000000001 = {

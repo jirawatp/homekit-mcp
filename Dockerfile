@@ -8,11 +8,13 @@ WORKDIR /app
 ENV npm_config_audit=false npm_config_fund=false
 COPY package.json package-lock.json ./
 RUN npm ci --ignore-scripts --no-audit --no-fund
-COPY tsconfig.json ./
+COPY tsconfig.json .c8rc.json ./
+COPY scripts/coverage-inventory.mjs ./scripts/coverage-inventory.mjs
 COPY src ./src
 COPY test ./test
 COPY config/mock.json ./config/mock.json
-RUN npm run build && node --test dist/test/*.test.js
+# Same gate as CI: tests plus 90% statements/branches/functions/lines on all production TypeScript.
+RUN npm run test:coverage
 
 FROM ${NODE_IMAGE} AS production-dependencies
 WORKDIR /app

@@ -1,6 +1,10 @@
 
 > homekit-mcp@0.1.0 test
-> npm run build && node --test dist/test/*.test.js
+> npm run test:coverage
+
+
+> homekit-mcp@0.1.0 test:coverage
+> npm run build && c8 node --test dist/test/*.test.js && node scripts/coverage-inventory.mjs
 
 
 > homekit-mcp@0.1.0 build
@@ -10,567 +14,921 @@ TAP version 13
 # Subtest: empty allowlist discloses no accessory and rejects read before contacting bridge
 ok 1 - empty allowlist discloses no accessory and rejects read before contacting bridge
   ---
-  duration_ms: 3.720875
+  duration_ms: 6.923875
   type: 'test'
   ...
 # Subtest: configuration rejects write mode, wildcard, duplicates and unknown keys
 ok 2 - configuration rejects write mode, wildcard, duplicates and unknown keys
   ---
-  duration_ms: 0.895625
+  duration_ms: 1.250541
   type: 'test'
   ...
 # Subtest: configuration input is bounded before parsing and file handles close on rejection
 ok 3 - configuration input is bounded before parsing and file handles close on rejection
   ---
-  duration_ms: 7.712209
+  duration_ms: 16.69475
   type: 'test'
   ...
 # Subtest: UUID normalization agrees with native bridge and rejects case-folded duplicates
 ok 4 - UUID normalization agrees with native bridge and rejects case-folded duplicates
   ---
-  duration_ms: 0.620209
+  duration_ms: 0.98425
   type: 'test'
   ...
 # Subtest: wrapper removes unallowed devices and unsafe camera/lock/garage services and characteristics
 ok 5 - wrapper removes unallowed devices and unsafe camera/lock/garage services and characteristics
   ---
-  duration_ms: 0.582583
+  duration_ms: 0.335791
   type: 'test'
   ...
 # Subtest: wrong accessory identity fails closed and mock values carry observation time
 ok 6 - wrong accessory identity fails closed and mock values carry observation time
   ---
-  duration_ms: 0.1795
+  duration_ms: 0.190333
   type: 'test'
   ...
 # Subtest: connector is disabled by default and the default verifier never grants access
 ok 7 - connector is disabled by default and the default verifier never grants access
   ---
-  duration_ms: 4.287625
+  duration_ms: 1.21425
   type: 'test'
   ...
 # Subtest: an explicit narrow synthetic read succeeds with exact claims, scope and accessory
 ok 8 - an explicit narrow synthetic read succeeds with exact claims, scope and accessory
   ---
-  duration_ms: 0.171291
+  duration_ms: 0.218458
   type: 'test'
   ...
 # Subtest: expiry, issuer, audience, subject and scope deny independently
 ok 9 - expiry, issuer, audience, subject and scope deny independently
   ---
-  duration_ms: 0.399708
+  duration_ms: 1.096791
   type: 'test'
   ...
 # Subtest: tools, accessory sets and household sharing need their own explicit allowlists
 ok 10 - tools, accessory sets and household sharing need their own explicit allowlists
   ---
-  duration_ms: 0.129375
+  duration_ms: 0.946709
   type: 'test'
   ...
 # Subtest: all six existing tools have explicit read scopes; every unknown or physical-control tool is denied
 ok 11 - all six existing tools have explicit read scopes; every unknown or physical-control tool is denied
   ---
-  duration_ms: 0.3405
+  duration_ms: 1.971167
   type: 'test'
   ...
 # Subtest: invalid verifier results, verifier failures and malformed policies/requests fail closed
 ok 12 - invalid verifier results, verifier failures and malformed policies/requests fail closed
   ---
-  duration_ms: 0.293584
+  duration_ms: 0.357042
   type: 'test'
   ...
 # Subtest: a disabled policy during verification denies the pending request
 ok 13 - a disabled policy during verification denies the pending request
   ---
-  duration_ms: 0.063792
+  duration_ms: 0.101917
   type: 'test'
   ...
 # Subtest: policy revocation during verification is rechecked; the resolved request is snapshotted
 ok 14 - policy revocation during verification is rechecked; the resolved request is snapshotted
   ---
-  duration_ms: 1.268917
+  duration_ms: 0.214375
   type: 'test'
   ...
 # Subtest: production expiry is evaluated after asynchronous verification
 ok 15 - production expiry is evaluated after asynchronous verification
   ---
-  duration_ms: 0.289958
+  duration_ms: 0.098166
+  type: 'test'
+  ...
+# Subtest: configuration loading is deny-all by default and rejects links, special files, oversize and invalid content
+ok 16 - configuration loading is deny-all by default and rejects links, special files, oversize and invalid content
+  ---
+  duration_ms: 50.4455
+  type: 'test'
+  ...
+# Subtest: mock bridge exposes only synthetic read-only data and can be closed
+ok 17 - mock bridge exposes only synthetic read-only data and can be closed
+  ---
+  duration_ms: 6.410208
+  type: 'test'
+  ...
+# Subtest: bridge removes non-allowlisted accessories, blocked services and unsafe characteristics
+ok 18 - bridge removes non-allowlisted accessories, blocked services and unsafe characteristics
+  ---
+  duration_ms: 2.080041
+  type: 'test'
+  ...
+# Subtest: event and occupancy inputs reject blank identifiers and timezone-less timestamps
+ok 19 - event and occupancy inputs reject blank identifiers and timezone-less timestamps
+  ---
+  duration_ms: 0.587042
+  type: 'test'
+  ...
+# Subtest: helper replies that are not exactly correlated objects close the transport with a protocol error
+ok 20 - helper replies that are not exactly correlated objects close the transport with a protocol error
+  ---
+  duration_ms: 2328.07225
+  type: 'test'
+  ...
+# Subtest: unknown or missing native error codes are collapsed to a generic safe code
+ok 21 - unknown or missing native error codes are collapsed to a generic safe code
+  ---
+  duration_ms: 1842.786375
+  type: 'test'
+  ...
+# Subtest: allowlisted read request carries its accessory id, and helper exit or missing executable are reported safely
+ok 22 - allowlisted read request carries its accessory id, and helper exit or missing executable are reported safely
+  ---
+  duration_ms: 863.650167
   type: 'test'
   ...
 # Subtest: synthetic event search filters rooms/types and returns timestamped metadata only
-ok 16 - synthetic event search filters rooms/types and returns timestamped metadata only
+ok 23 - synthetic event search filters rooms/types and returns timestamped metadata only
   ---
-  duration_ms: 1.622334
+  duration_ms: 2.223667
   type: 'test'
   ...
 # Subtest: history unsupported is unavailable, never an empty search result
-ok 17 - history unsupported is unavailable, never an empty search result
+ok 24 - history unsupported is unavailable, never an empty search result
   ---
-  duration_ms: 0.800667
+  duration_ms: 0.18375
   type: 'test'
   ...
 # Subtest: available search with no matching events remains available with unknown freshness
-ok 18 - available search with no matching events remains available with unknown freshness
+ok 25 - available search with no matching events remains available with unknown freshness
   ---
-  duration_ms: 0.143459
+  duration_ms: 0.087375
   type: 'test'
   ...
 # Subtest: events are newest first, limited, and filtered by inclusive time bounds
-ok 19 - events are newest first, limited, and filtered by inclusive time bounds
+ok 26 - events are newest first, limited, and filtered by inclusive time bounds
   ---
-  duration_ms: 0.105541
+  duration_ms: 0.101959
   type: 'test'
   ...
 # Subtest: invalid ranges, future requests, limits, and unsupported identification are rejected
-ok 20 - invalid ranges, future requests, limits, and unsupported identification are rejected
+ok 27 - invalid ranges, future requests, limits, and unsupported identification are rejected
   ---
-  duration_ms: 0.415875
+  duration_ms: 0.340417
   type: 'test'
   ...
 # Subtest: fixtures and results are isolated and reject URL/path media references
-ok 21 - fixtures and results are isolated and reject URL/path media references
+ok 28 - fixtures and results are isolated and reject URL/path media references
   ---
-  duration_ms: 0.174042
+  duration_ms: 0.133292
+  type: 'test'
+  ...
+# Subtest: options parser requires both approvals, absolute paths, port 18443 and refuses duplicates or missing values
+ok 29 - options parser requires both approvals, absolute paths, port 18443 and refuses duplicates or missing values
+  ---
+  duration_ms: 0.962042
+  type: 'test'
+  ...
+# Subtest: supplied-file reader enforces regular, non-empty, owned, private and bounded files and always closes
+ok 30 - supplied-file reader enforces regular, non-empty, owned, private and bounded files and always closes
+  ---
+  duration_ms: 0.799583
+  type: 'test'
+  ...
+# Subtest: real descriptor opener refuses missing paths
+ok 31 - real descriptor opener refuses missing paths
+  ---
+  duration_ms: 4.783916
+  type: 'test'
+  ...
+# Subtest: default opener refuses symlinks (O_NOFOLLOW) even when the target would pass every other check
+ok 32 - default opener refuses symlinks (O_NOFOLLOW) even when the target would pass every other check
+  ---
+  duration_ms: 22.401083
+  type: 'test'
+  ...
+# Subtest: default opener opens a FIFO without blocking (O_NONBLOCK) and then refuses it as a special file
+ok 33 - default opener opens a FIFO without blocking (O_NONBLOCK) and then refuses it as a special file
+  ---
+  duration_ms: 270.242333
+  type: 'test'
+  ...
+# Subtest: bridge executable must be an owned, non-writable, executable regular file of sane size
+ok 34 - bridge executable must be an owned, non-writable, executable regular file of sane size
+  ---
+  duration_ms: 0.50025
+  type: 'test'
+  ...
+# Subtest: TLS validation requires SAN, matching key, current validity and a successful TLS 1.3 context, hiding parser text
+ok 35 - TLS validation requires SAN, matching key, current validity and a successful TLS 1.3 context, hiding parser text
+  ---
+  duration_ms: 16.770541
+  type: 'test'
+  ...
+# Subtest: raw headers keep duplicates separate and request bodies are bounded and accept binary chunks
+ok 36 - raw headers keep duplicates separate and request bodies are bounded and accept binary chunks
+  ---
+  duration_ms: 1.138209
+  type: 'test'
+  ...
+# Subtest: default dependencies are inert until invoked: no listener, and the helper refuses before any spawn
+ok 37 - default dependencies are inert until invoked: no listener, and the helper refuses before any spawn
+  ---
+  duration_ms: 0.943792
+  type: 'test'
+  ...
+# Subtest: gateway refuses non-macOS, unknown uid and bad arguments before opening any file or creating anything
+ok 38 - gateway refuses non-macOS, unknown uid and bad arguments before opening any file or creating anything
+  ---
+  duration_ms: 0.294792
+  type: 'test'
+  ...
+# Subtest: every credential, config, executable or TLS failure happens before the helper or the server exists
+ok 39 - every credential, config, executable or TLS failure happens before the helper or the server exists
+  ---
+  duration_ms: 2.957
+  type: 'test'
+  ...
+# Subtest: successful start binds loopback only with exclusive port, hardened limits and cleanup hooks
+ok 40 - successful start binds loopback only with exclusive port, hardened limits and cleanup hooks
+  ---
+  duration_ms: 0.345417
+  type: 'test'
+  ...
+# Subtest: shutdown closes the server, its connections and the helper exactly once, tolerating helper errors
+ok 41 - shutdown closes the server, its connections and the helper exactly once, tolerating helper errors
+  ---
+  duration_ms: 4.437667
+  type: 'test'
+  ...
+# Subtest: startup failures close what was created and expose only a fixed error code
+ok 42 - startup failures close what was created and expose only a fixed error code
+  ---
+  duration_ms: 2.499125
+  type: 'test'
+  ...
+# Subtest: request handler rejects unauthenticated, wrong-route, cross-origin and oversized requests without reading the body
+ok 43 - request handler rejects unauthenticated, wrong-route, cross-origin and oversized requests without reading the body
+  ---
+  duration_ms: 1.068792
+  type: 'test'
+  ...
+# Subtest: authenticated requests reach only read-only bridge commands and return bounded JSON
+ok 44 - authenticated requests reach only read-only bridge commands and return bounded JSON
+  ---
+  duration_ms: 1.690417
+  type: 'test'
+  ...
+# Subtest: body overflow, stream errors and bridge failures produce fixed errors without leaking text
+ok 45 - body overflow, stream errors and bridge failures produce fixed errors without leaking text
+  ---
+  duration_ms: 0.734041
+  type: 'test'
+  ...
+# Subtest: a reply is never written to a connection that was already destroyed or finished
+ok 46 - a reply is never written to a connection that was already destroyed or finished
+  ---
+  duration_ms: 1.085542
+  type: 'test'
+  ...
+# Subtest: CLI wrapper reports one fixed line and exit code 1 for any refusal, and nothing on success
+ok 47 - CLI wrapper reports one fixed line and exit code 1 for any refusal, and nothing on success
+  ---
+  duration_ms: 0.381875
+  type: 'test'
+  ...
+# Subtest: running the gateway module directly refuses to start without approvals and prints only the fixed line
+ok 48 - running the gateway module directly refuses to start without approvals and prints only the fixed line
+  ---
+  duration_ms: 110.849833
+  type: 'test'
+  ...
+# Subtest: importing the gateway module never starts it
+ok 49 - importing the gateway module never starts it
+  ---
+  duration_ms: 130.364583
+  type: 'test'
+  ...
+# Subtest: a failure registering signal handlers after listening closes the server and helper once and reports a fixed error
+ok 50 - a failure registering signal handlers after listening closes the server and helper once and reports a fixed error
+  ---
+  duration_ms: 7.778375
   type: 'test'
   ...
 # Subtest: pure handler dispatches only the three read commands and envelopes results
-ok 22 - pure handler dispatches only the three read commands and envelopes results
+ok 51 - pure handler dispatches only the three read commands and envelopes results
   ---
-  duration_ms: 2.719083
+  duration_ms: 9.123125
   type: 'test'
   ...
 # Subtest: path and method failures never access the bridge
-ok 23 - path and method failures never access the bridge
+ok 52 - path and method failures never access the bridge
   ---
-  duration_ms: 0.133459
+  duration_ms: 0.148167
   type: 'test'
   ...
 # Subtest: missing, wrong, short, duplicate, or array bearer headers never access the bridge
-ok 24 - missing, wrong, short, duplicate, or array bearer headers never access the bridge
+ok 53 - missing, wrong, short, duplicate, or array bearer headers never access the bridge
   ---
-  duration_ms: 0.257625
+  duration_ms: 0.162792
   type: 'test'
   ...
 # Subtest: any Origin, including empty or null-like Origin, is rejected without CORS
-ok 25 - any Origin, including empty or null-like Origin, is rejected without CORS
+ok 54 - any Origin, including empty or null-like Origin, is rejected without CORS
   ---
-  duration_ms: 0.080833
+  duration_ms: 0.085541
   type: 'test'
   ...
 # Subtest: JSON media type is mandatory and compressed or duplicate types are rejected
-ok 26 - JSON media type is mandatory and compressed or duplicate types are rejected
+ok 55 - JSON media type is mandatory and compressed or duplicate types are rejected
   ---
-  duration_ms: 0.241709
+  duration_ms: 0.153542
   type: 'test'
   ...
 # Subtest: oversized actual or declared bodies are rejected before bridge access
-ok 27 - oversized actual or declared bodies are rejected before bridge access
+ok 56 - oversized actual or declared bodies are rejected before bridge access
   ---
-  duration_ms: 0.10625
+  duration_ms: 0.107875
   type: 'test'
   ...
 # Subtest: invalid UTF-8, malformed JSON, lengths, and nonobjects are rejected
-ok 28 - invalid UTF-8, malformed JSON, lengths, and nonobjects are rejected
+ok 57 - invalid UTF-8, malformed JSON, lengths, and nonobjects are rejected
   ---
-  duration_ms: 0.488459
+  duration_ms: 0.555375
   type: 'test'
   ...
 # Subtest: unknown fields, actuation, missing IDs, and malformed IDs are rejected
-ok 29 - unknown fields, actuation, missing IDs, and malformed IDs are rejected
+ok 58 - unknown fields, actuation, missing IDs, and malformed IDs are rejected
   ---
-  duration_ms: 5.769167
+  duration_ms: 0.384084
   type: 'test'
   ...
 # Subtest: UUID IDs are normalized through the same configuration policy
-ok 30 - UUID IDs are normalized through the same configuration policy
+ok 59 - UUID IDs are normalized through the same configuration policy
   ---
-  duration_ms: 7.704875
+  duration_ms: 0.187542
   type: 'test'
   ...
 # Subtest: real wrapper denies IDs outside the allowlist before touching its transport
-ok 31 - real wrapper denies IDs outside the allowlist before touching its transport
+ok 60 - real wrapper denies IDs outside the allowlist before touching its transport
   ---
-  duration_ms: 0.402375
+  duration_ms: 0.151416
   type: 'test'
   ...
 # Subtest: bridge errors never return native messages, device names, or stack traces
-ok 32 - bridge errors never return native messages, device names, or stack traces
+ok 61 - bridge errors never return native messages, device names, or stack traces
   ---
-  duration_ms: 0.158416
+  duration_ms: 0.322916
   type: 'test'
   ...
 # Subtest: oversized bridge output is withheld and replaced with a bounded generic error
-ok 33 - oversized bridge output is withheld and replaced with a bounded generic error
+ok 62 - oversized bridge output is withheld and replaced with a bounded generic error
   ---
-  duration_ms: 54.099917
+  duration_ms: 190.956458
   type: 'test'
   ...
 # Subtest: invalid configured token fails closed instead of accepting a short secret
-ok 34 - invalid configured token fails closed instead of accepting a short secret
+ok 63 - invalid configured token fails closed instead of accepting a short secret
   ---
-  duration_ms: 0.093459
+  duration_ms: 0.12025
   type: 'test'
   ...
 # Subtest: CLI parsing requires both approval flags, absolute files, and the fixed port
-ok 35 - CLI parsing requires both approval flags, absolute files, and the fixed port
+ok 64 - CLI parsing requires both approval flags, absolute files, and the fixed port
   ---
-  duration_ms: 0.401083
+  duration_ms: 0.44725
   type: 'test'
   ...
 # Subtest: Docker host URL rejects public endpoints, plaintext, credentials, query and alternate paths
-ok 36 - Docker host URL rejects public endpoints, plaintext, credentials, query and alternate paths
+ok 65 - Docker host URL rejects public endpoints, plaintext, credentials, query and alternate paths
   ---
-  duration_ms: 0.445958
+  duration_ms: 0.671542
   type: 'test'
   ...
 # Subtest: supplied CA cannot be symlinked or writable by other users before any credential is read
-ok 37 - supplied CA cannot be symlinked or writable by other users before any credential is read
+ok 66 - supplied CA cannot be symlinked or writable by other users before any credential is read
   ---
-  duration_ms: 9.064375
+  duration_ms: 12.353375
   type: 'test'
   ...
 # Subtest: host transport uses fixed reads, private CA, TLS authorization and no credential in body
-ok 38 - host transport uses fixed reads, private CA, TLS authorization and no credential in body
+ok 67 - host transport uses fixed reads, private CA, TLS authorization and no credential in body
   ---
-  duration_ms: 0.851541
+  duration_ms: 1.980167
   type: 'test'
   ...
 # Subtest: host client rejects writes and malformed/errors before state can be exposed
-ok 39 - host client rejects writes and malformed/errors before state can be exposed
+ok 68 - host client rejects writes and malformed/errors before state can be exposed
   ---
-  duration_ms: 0.218833
+  duration_ms: 0.245916
+  type: 'test'
+  ...
+# Subtest: TLS requester pins TLS 1.3, the private CA and certificate verification and sends the token only as a header
+ok 69 - TLS requester pins TLS 1.3, the private CA and certificate verification and sends the token only as a header
+  ---
+  duration_ms: 1.377
+  type: 'test'
+  ...
+# Subtest: TLS requester fails closed on bad status, media type, oversize, malformed, broken and truncated replies
+ok 70 - TLS requester fails closed on bad status, media type, oversize, malformed, broken and truncated replies
+  ---
+  duration_ms: 2.271208
+  type: 'test'
+  ...
+# Subtest: default requester wiring uses the real https client only when called
+ok 71 - default requester wiring uses the real https client only when called
+  ---
+  duration_ms: 9.620542
+  type: 'test'
+  ...
+# Subtest: transport timeout aborts the in-flight request, frees the slot and reports a bounded error
+ok 72 - transport timeout aborts the in-flight request, frees the slot and reports a bounded error
+  ---
+  duration_ms: 41.562959
+  type: 'test'
+  ...
+# Subtest: close aborts an in-flight read and concurrent reads are refused
+ok 73 - close aborts an in-flight read and concurrent reads are refused
+  ---
+  duration_ms: 0.817417
+  type: 'test'
+  ...
+# Subtest: host transport validates ids and replies before exposing results
+ok 74 - host transport validates ids and replies before exposing results
+  ---
+  duration_ms: 1.9795
+  type: 'test'
+  ...
+# Subtest: bounded reader enforces file type, size, ownership and permissions and always closes
+ok 75 - bounded reader enforces file type, size, ownership and permissions and always closes
+  ---
+  duration_ms: 0.901791
+  type: 'test'
+  ...
+# Subtest: loading from real synthetic files accepts private token and CA, and refuses special files
+ok 76 - loading from real synthetic files accepts private token and CA, and refuses special files
+  ---
+  duration_ms: 162.117167
+  type: 'test'
+  ...
+# Subtest: every unsafe or incomplete argument combination is refused before config, helper or credentials are touched
+ok 77 - every unsafe or incomplete argument combination is refused before config, helper or credentials are touched
+  ---
+  duration_ms: 4.219041
+  type: 'test'
+  ...
+# Subtest: mode selection chooses exactly one transport and resolves paths to absolute form
+ok 78 - mode selection chooses exactly one transport and resolves paths to absolute form
+  ---
+  duration_ms: 0.339292
+  type: 'test'
+  ...
+# Subtest: configuration or transport failures stop startup before serving
+ok 79 - configuration or transport failures stop startup before serving
+  ---
+  duration_ms: 0.282416
+  type: 'test'
+  ...
+# Subtest: the served factory builds a labelled server and protocol errors never echo details
+ok 80 - the served factory builds a labelled server and protocol errors never echo details
+  ---
+  duration_ms: 5.077292
+  type: 'test'
+  ...
+# Subtest: stdin end and both signals close the bridge and server exactly once even when closing fails
+ok 81 - stdin end and both signals close the bridge and server exactly once even when closing fails
+  ---
+  duration_ms: 8.083333
+  type: 'test'
+  ...
+# Subtest: runCli returns 0 on success and a fixed refusal line, without arguments or paths, on any failure
+ok 82 - runCli returns 0 on success and a fixed refusal line, without arguments or paths, on any failure
+  ---
+  duration_ms: 0.306208
+  type: 'test'
+  ...
+# Subtest: default runtime wiring is inert: it reads nothing and launches nothing until used
+ok 83 - default runtime wiring is inert: it reads nothing and launches nothing until used
+  ---
+  duration_ms: 12.101333
+  type: 'test'
+  ...
+# Subtest: a failed start closes the already-created transport exactly once and redacts cleanup failures
+ok 84 - a failed start closes the already-created transport exactly once and redacts cleanup failures
+  ---
+  duration_ms: 0.394166
+  type: 'test'
+  ...
+# Subtest: a failure while registering shutdown hooks closes the transport and server handle once, even if hooks fire later
+ok 85 - a failure while registering shutdown hooks closes the transport and server handle once, even if hooks fire later
+  ---
+  duration_ms: 2.534458
+  type: 'test'
+  ...
+# Subtest: a configuration failure happens before any transport exists, so there is nothing to close
+ok 86 - a configuration failure happens before any transport exists, so there is nothing to close
+  ---
+  duration_ms: 0.1935
+  type: 'test'
+  ...
+# Subtest: extensionless and symlinked launches still run the entry module and refuse unsafe arguments safely
+ok 87 - extensionless and symlinked launches still run the entry module and refuse unsafe arguments safely
+  ---
+  duration_ms: 731.769541
   type: 'test'
   ...
 # Subtest: actual MCP stdio handshake, tool schemas, safe reads and synthetic event search
-ok 40 - actual MCP stdio handshake, tool schemas, safe reads and synthetic event search
+ok 88 - actual MCP stdio handshake, tool schemas, safe reads and synthetic event search
   ---
-  duration_ms: 111.290208
+  duration_ms: 219.408708
   type: 'test'
   ...
 # Subtest: MCP default deny all refuses accessory access
-ok 41 - MCP default deny all refuses accessory access
+ok 89 - MCP default deny all refuses accessory access
   ---
-  duration_ms: 83.863542
+  duration_ms: 155.804584
   type: 'test'
   ...
 # Subtest: native launch cannot happen without explicit native flag, config and executable
-ok 42 - native launch cannot happen without explicit native flag, config and executable
+ok 90 - native launch cannot happen without explicit native flag, config and executable
   ---
-  duration_ms: 71.221125
+  duration_ms: 117.261166
   type: 'test'
   ...
 # Subtest: private transport correlates split frames and strips inherited secrets
-ok 43 - private transport correlates split frames and strips inherited secrets
+ok 91 - private transport correlates split frames and strips inherited secrets
   ---
-  duration_ms: 153.284291
+  duration_ms: 433.589042
   type: 'test'
   ...
 # Subtest: malformed or oversized helper output fails closed
-ok 44 - malformed or oversized helper output fails closed
+ok 92 - malformed or oversized helper output fails closed
   ---
-  duration_ms: 225.848334
+  duration_ms: 749.239291
   type: 'test'
   ...
 # Subtest: helper timeout terminates a stuck process even when it ignores SIGTERM
-ok 45 - helper timeout terminates a stuck process even when it ignores SIGTERM
+ok 93 - helper timeout terminates a stuck process even when it ignores SIGTERM
   ---
-  duration_ms: 2088.34375
+  duration_ms: 2326.947958
   type: 'test'
   ...
 # Subtest: concurrent read is refused instead of timing out behind native serial queue
-ok 46 - concurrent read is refused instead of timing out behind native serial queue
+ok 94 - concurrent read is refused instead of timing out behind native serial queue
   ---
-  duration_ms: 212.922917
+  duration_ms: 451.008667
   type: 'test'
   ...
 # Subtest: native error codes are safe and household messages are not forwarded
-ok 47 - native error codes are safe and household messages are not forwarded
+ok 95 - native error codes are safe and household messages are not forwarded
   ---
-  duration_ms: 109.066209
+  duration_ms: 327.152834
   type: 'test'
   ...
 # Subtest: synthetic occupancy is labelled and never identifies a person
-ok 48 - synthetic occupancy is labelled and never identifies a person
+ok 96 - synthetic occupancy is labelled and never identifies a person
   ---
-  duration_ms: 2.837959
+  duration_ms: 4.781167
   type: 'test'
   ...
 # Subtest: missing, stale, and future readings yield unknown occupancy
-ok 49 - missing, stale, and future readings yield unknown occupancy
+ok 97 - missing, stale, and future readings yield unknown occupancy
   ---
-  duration_ms: 0.185416
+  duration_ms: 0.133208
   type: 'test'
   ...
 # Subtest: motion inactivity cannot prove an empty room; explicit occupancy clear can
-ok 50 - motion inactivity cannot prove an empty room; explicit occupancy clear can
+ok 98 - motion inactivity cannot prove an empty room; explicit occupancy clear can
   ---
-  duration_ms: 0.116125
+  duration_ms: 0.07875
   type: 'test'
   ...
 # Subtest: newest reading per sensor wins and fresh positive readings are conservative
-ok 51 - newest reading per sensor wins and fresh positive readings are conservative
+ok 99 - newest reading per sensor wins and fresh positive readings are conservative
   ---
-  duration_ms: 0.0835
+  duration_ms: 0.072333
   type: 'test'
   ...
 # Subtest: occupancy freshness describes its evidence, not a newer unknown reading
-ok 52 - occupancy freshness describes its evidence, not a newer unknown reading
+ok 100 - occupancy freshness describes its evidence, not a newer unknown reading
   ---
-  duration_ms: 0.118334
+  duration_ms: 0.113125
   type: 'test'
   ...
 # Subtest: contradictory equal-time occupancy readings remain unknown regardless of order
-ok 53 - contradictory equal-time occupancy readings remain unknown regardless of order
+ok 101 - contradictory equal-time occupancy readings remain unknown regardless of order
   ---
-  duration_ms: 0.147334
+  duration_ms: 0.084666
   type: 'test'
   ...
 # Subtest: latest readings follow a signal across rooms instead of reviving old occupancy
-ok 54 - latest readings follow a signal across rooms instead of reviving old occupancy
+ok 102 - latest readings follow a signal across rooms instead of reviving old occupancy
   ---
-  duration_ms: 0.049708
+  duration_ms: 0.050541
   type: 'test'
   ...
 # Subtest: named-person location is unavailable by default and without signal-specific consent
-ok 55 - named-person location is unavailable by default and without signal-specific consent
+ok 103 - named-person location is unavailable by default and without signal-specific consent
   ---
-  duration_ms: 0.182125
+  duration_ms: 0.204583
   type: 'test'
   ...
 # Subtest: explicit active consent enables only a current device/sensor presence indication
-ok 56 - explicit active consent enables only a current device/sensor presence indication
+ok 104 - explicit active consent enables only a current device/sensor presence indication
   ---
-  duration_ms: 0.228375
+  duration_ms: 0.079875
   type: 'test'
   ...
 # Subtest: presence collected before consent is not reused for location
-ok 57 - presence collected before consent is not reused for location
+ok 105 - presence collected before consent is not reused for location
   ---
-  duration_ms: 0.283959
+  duration_ms: 0.054459
   type: 'test'
   ...
 # Subtest: person location freshness describes present evidence rather than a newer absent device
-ok 58 - person location freshness describes present evidence rather than a newer absent device
+ok 106 - person location freshness describes present evidence rather than a newer absent device
   ---
-  duration_ms: 0.110417
+  duration_ms: 2.556291
   type: 'test'
   ...
 # Subtest: revoked, expired, and future consent do not grant access
-ok 59 - revoked, expired, and future consent do not grant access
+ok 107 - revoked, expired, and future consent do not grant access
   ---
-  duration_ms: 0.068667
+  duration_ms: 0.118583
   type: 'test'
   ...
 # Subtest: camera-based person identification is rejected even when consent is supplied
-ok 60 - camera-based person identification is rejected even when consent is supplied
+ok 108 - camera-based person identification is rejected even when consent is supplied
   ---
-  duration_ms: 0.0375
+  duration_ms: 0.071542
   type: 'test'
   ...
 # Subtest: stale or conflicting person presence is unavailable, never guessed
-ok 61 - stale or conflicting person presence is unavailable, never guessed
+ok 109 - stale or conflicting person presence is unavailable, never guessed
   ---
-  duration_ms: 0.105417
+  duration_ms: 0.095959
   type: 'test'
   ...
 # Subtest: a single device with contradictory equal-time room readings is unavailable
-ok 62 - a single device with contradictory equal-time room readings is unavailable
+ok 110 - a single device with contradictory equal-time room readings is unavailable
   ---
-  duration_ms: 0.068
+  duration_ms: 0.0945
   type: 'test'
   ...
 # Subtest: latest absent reading removes an earlier location and clock skew is unavailable
-ok 63 - latest absent reading removes an earlier location and clock skew is unavailable
+ok 111 - latest absent reading removes an earlier location and clock skew is unavailable
   ---
-  duration_ms: 0.0515
+  duration_ms: 0.07325
   type: 'test'
   ...
 # Subtest: recovery keeps only authenticated finalized media with committed metadata and index searchable
-ok 64 - recovery keeps only authenticated finalized media with committed metadata and index searchable
+ok 112 - recovery keeps only authenticated finalized media with committed metadata and index searchable
   ---
-  duration_ms: 1.01675
+  duration_ms: 1.791875
   type: 'test'
   ...
 # Subtest: power failure during temporary write discards only that owned bundle and marks interruption through restart
-ok 65 - power failure during temporary write discards only that owned bundle and marks interruption through restart
+ok 113 - power failure during temporary write discards only that owned bundle and marks interruption through restart
   ---
-  duration_ms: 0.23225
+  duration_ms: 0.358458
   type: 'test'
   ...
 # Subtest: crash after durable finalization but before index commit schedules authenticated reindex then idempotent keep
-ok 66 - crash after durable finalization but before index commit schedules authenticated reindex then idempotent keep
+ok 114 - crash after durable finalization but before index commit schedules authenticated reindex then idempotent keep
   ---
-  duration_ms: 0.159
+  duration_ms: 0.096083
   type: 'test'
   ...
 # Subtest: missing media removes dangling index and sidecars without pretending history is empty
-ok 67 - missing media removes dangling index and sidecars without pretending history is empty
+ok 115 - missing media removes dangling index and sidecars without pretending history is empty
   ---
-  duration_ms: 0.198792
+  duration_ms: 0.089417
   type: 'test'
   ...
 # Subtest: corrupt integrity or missing authenticated metadata quarantines in place without publishing or copying media
-ok 68 - corrupt integrity or missing authenticated metadata quarantines in place without publishing or copying media
+ok 116 - corrupt integrity or missing authenticated metadata quarantines in place without publishing or copying media
   ---
-  duration_ms: 0.22975
+  duration_ms: 0.098583
   type: 'test'
   ...
 # Subtest: a durably acknowledged in-place quarantine stays unavailable without blocking capture forever
-ok 69 - a durably acknowledged in-place quarantine stays unavailable without blocking capture forever
+ok 117 - a durably acknowledged in-place quarantine stays unavailable without blocking capture forever
   ---
-  duration_ms: 0.080542
+  duration_ms: 0.08825
   type: 'test'
   ...
 # Subtest: future, corrupt, oversized, mismatched and unsafe recovery entries fail closed without action targets
-ok 70 - future, corrupt, oversized, mismatched and unsafe recovery entries fail closed without action targets
+ok 118 - future, corrupt, oversized, mismatched and unsafe recovery entries fail closed without action targets
   ---
-  duration_ms: 0.231625
+  duration_ms: 2.867375
   type: 'test'
   ...
 # Subtest: incomplete scans, symlink uncertainty, duplicate entries, overflow and foreign namespaces block recovery
-ok 71 - incomplete scans, symlink uncertainty, duplicate entries, overflow and foreign namespaces block recovery
+ok 119 - incomplete scans, symlink uncertainty, duplicate entries, overflow and foreign namespaces block recovery
   ---
-  duration_ms: 0.131083
+  duration_ms: 0.166291
   type: 'test'
   ...
 # Subtest: NAS outage permits only an already bounded local spool with no growth in configured cap
-ok 72 - NAS outage permits only an already bounded local spool with no growth in configured cap
+ok 120 - NAS outage permits only an already bounded local spool with no growth in configured cap
   ---
-  duration_ms: 0.647375
+  duration_ms: 0.486584
   type: 'test'
   ...
 # Subtest: at the local cap capture stops and marks a gap; no automatic deletion policy is applied
-ok 73 - at the local cap capture stops and marks a gap; no automatic deletion policy is applied
+ok 121 - at the local cap capture stops and marks a gap; no automatic deletion policy is applied
   ---
-  duration_ms: 2.055167
+  duration_ms: 0.122167
   type: 'test'
   ...
 # Subtest: exactly fitting the cap works; transfer duplication, logs and temporary files count toward it
-ok 74 - exactly fitting the cap works; transfer duplication, logs and temporary files count toward it
+ok 122 - exactly fitting the cap works; transfer duplication, logs and temporary files count toward it
   ---
-  duration_ms: 5.717916
+  duration_ms: 5.294666
   type: 'test'
   ...
 # Subtest: free disk reserve stops before allocating even when eviction could hypothetically reclaim bytes
-ok 75 - free disk reserve stops before allocating even when eviction could hypothetically reclaim bytes
+ok 123 - free disk reserve stops before allocating even when eviction could hypothetically reclaim bytes
   ---
-  duration_ms: 0.132792
+  duration_ms: 0.117417
   type: 'test'
   ...
 # Subtest: expired local spool requires reconciliation and explicit eviction rather than silently keeping stale data
-ok 76 - expired local spool requires reconciliation and explicit eviction rather than silently keeping stale data
+ok 124 - expired local spool requires reconciliation and explicit eviction rather than silently keeping stale data
   ---
-  duration_ms: 0.113958
+  duration_ms: 0.065875
   type: 'test'
   ...
 # Subtest: draft local spool is 20 decimal GB and every policy above the hard 50GB ceiling is rejected
-ok 77 - draft local spool is 20 decimal GB and every policy above the hard 50GB ceiling is rejected
+ok 125 - draft local spool is 20 decimal GB and every policy above the hard 50GB ceiling is rejected
   ---
-  duration_ms: 0.072417
+  duration_ms: 0.0825
   type: 'test'
   ...
 # Subtest: unbounded/oversized segments, impossible disk facts and corrupt inventories stop the spool
-ok 78 - unbounded/oversized segments, impossible disk facts and corrupt inventories stop the spool
+ok 126 - unbounded/oversized segments, impossible disk facts and corrupt inventories stop the spool
   ---
-  duration_ms: 0.089125
+  duration_ms: 0.102791
   type: 'test'
   ...
 # Subtest: retention age boundary evicts the whole bundle including thumbnail, index and metadata
-ok 79 - retention age boundary evicts the whole bundle including thumbnail, index and metadata
+ok 127 - retention age boundary evicts the whole bundle including thumbnail, index and metadata
   ---
-  duration_ms: 2.200875
+  duration_ms: 2.7765
   type: 'test'
   ...
 # Subtest: total quota evicts oldest first regardless of inventory order, including pending budget
-ok 80 - total quota evicts oldest first regardless of inventory order, including pending budget
+ok 128 - total quota evicts oldest first regardless of inventory order, including pending budget
   ---
-  duration_ms: 0.240125
+  duration_ms: 0.270875
   type: 'test'
   ...
 # Subtest: temporary files and logs have independent age and byte bounds included in total bytes
-ok 81 - temporary files and logs have independent age and byte bounds included in total bytes
+ok 129 - temporary files and logs have independent age and byte bounds included in total bytes
   ---
-  duration_ms: 10.27125
+  duration_ms: 7.526833
   type: 'test'
   ...
 # Subtest: pending temporary and log writes reserve their own subquota before capture is allowed
-ok 82 - pending temporary and log writes reserve their own subquota before capture is allowed
+ok 130 - pending temporary and log writes reserve their own subquota before capture is allowed
   ---
-  duration_ms: 0.273875
+  duration_ms: 0.1765
   type: 'test'
   ...
 # Subtest: free disk reserve triggers oldest-first reclamation even below total quota
-ok 83 - free disk reserve triggers oldest-first reclamation even below total quota
+ok 131 - free disk reserve triggers oldest-first reclamation even below total quota
   ---
-  duration_ms: 0.140542
+  duration_ms: 0.177416
   type: 'test'
   ...
 # Subtest: capture stops when even removing every owned record cannot preserve disk reserve
-ok 84 - capture stops when even removing every owned record cannot preserve disk reserve
+ok 132 - capture stops when even removing every owned record cannot preserve disk reserve
   ---
-  duration_ms: 0.169
+  duration_ms: 0.073583
   type: 'test'
   ...
 # Subtest: an impossible pending write stops without evicting otherwise valid records to make room
-ok 85 - an impossible pending write stops without evicting otherwise valid records to make room
+ok 133 - an impossible pending write stops without evicting otherwise valid records to make room
   ---
-  duration_ms: 0.146
+  duration_ms: 0.082292
   type: 'test'
   ...
 # Subtest: no write budget means capture is stopped while cleanup can still be previewed
-ok 86 - no write budget means capture is stopped while cleanup can still be previewed
+ok 134 - no write budget means capture is stopped while cleanup can still be previewed
   ---
-  duration_ms: 0.0625
+  duration_ms: 0.058458
   type: 'test'
   ...
 # Subtest: future or corrupt records fail closed with no deletion plan
-ok 87 - future or corrupt records fail closed with no deletion plan
+ok 135 - future or corrupt records fail closed with no deletion plan
   ---
-  duration_ms: 0.280417
+  duration_ms: 0.113417
   type: 'test'
   ...
 # Subtest: absolute, traversal, foreign-bundle, encoded, nested and Windows paths cannot be deletion targets
-ok 88 - absolute, traversal, foreign-bundle, encoded, nested and Windows paths cannot be deletion targets
+ok 136 - absolute, traversal, foreign-bundle, encoded, nested and Windows paths cannot be deletion targets
   ---
-  duration_ms: 0.326709
+  duration_ms: 0.980708
   type: 'test'
   ...
 # Subtest: symlinks, special files, unverified ancestors, foreign namespace and incomplete scans fail closed
-ok 89 - symlinks, special files, unverified ancestors, foreign namespace and incomplete scans fail closed
+ok 137 - symlinks, special files, unverified ancestors, foreign namespace and incomplete scans fail closed
   ---
-  duration_ms: 0.11475
+  duration_ms: 0.100125
   type: 'test'
   ...
 # Subtest: duplicate bundles and members and missing/multiple primary files are invalid
-ok 90 - duplicate bundles and members and missing/multiple primary files are invalid
+ok 138 - duplicate bundles and members and missing/multiple primary files are invalid
   ---
-  duration_ms: 0.062083
+  duration_ms: 0.086584
   type: 'test'
   ...
 # Subtest: integer overflow, huge inventories and large per-bundle lists are bounded
-ok 91 - integer overflow, huge inventories and large per-bundle lists are bounded
+ok 139 - integer overflow, huge inventories and large per-bundle lists are bounded
   ---
-  duration_ms: 0.079625
+  duration_ms: 0.115417
   type: 'test'
   ...
 # Subtest: policy, clock, disk and pending input validation stop capture without deletions
-ok 92 - policy, clock, disk and pending input validation stop capture without deletions
+ok 140 - policy, clock, disk and pending input validation stop capture without deletions
   ---
-  duration_ms: 0.093959
+  duration_ms: 0.854875
   type: 'test'
   ...
 # Subtest: planner is deterministic and does not mutate inventory, policy or caller-owned arrays
-ok 93 - planner is deterministic and does not mutate inventory, policy or caller-owned arrays
+ok 141 - planner is deterministic and does not mutate inventory, policy or caller-owned arrays
   ---
-  duration_ms: 0.418959
+  duration_ms: 0.376333
   type: 'test'
   ...
-1..93
-# tests 93
+# Subtest: non-mock status labels the transport honestly and never claims synthetic camera history
+ok 142 - non-mock status labels the transport honestly and never claims synthetic camera history
+  ---
+  duration_ms: 24.137375
+  type: 'test'
+  ...
+# Subtest: occupancy is derived only from fresh allowlisted occupancy and motion sensors in the requested room
+ok 143 - occupancy is derived only from fresh allowlisted occupancy and motion sensors in the requested room
+  ---
+  duration_ms: 3.941042
+  type: 'test'
+  ...
+# Subtest: occupancy readings map true/1 detected, false/0 not detected, other values unknown, and nullish values are ignored
+ok 144 - occupancy readings map true/1 detected, false/0 not detected, other values unknown, and nullish values are ignored
+  ---
+  duration_ms: 12.376458
+  type: 'test'
+  ...
+# Subtest: a room with more than eight sensors is refused instead of fanning out reads
+ok 145 - a room with more than eight sensors is refused instead of fanning out reads
+  ---
+  duration_ms: 1.065917
+  type: 'test'
+  ...
+# Subtest: bridge failures return bounded unavailable results without helper text
+ok 146 - bridge failures return bounded unavailable results without helper text
+  ---
+  duration_ms: 2.607875
+  type: 'test'
+  ...
+1..146
+# tests 146
 # suites 0
-# pass 93
+# pass 146
 # fail 0
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 2897.425709
+# duration_ms 5250.4985
+---------------------|---------|----------|---------|---------|---------------------
+File                 | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
+---------------------|---------|----------|---------|---------|---------------------
+All files            |     100 |    98.26 |     100 |     100 |
+ bridge.ts           |     100 |    96.29 |     100 |     100 | 50
+ config.ts           |     100 |      100 |     100 |     100 |
+ connector-policy.ts |     100 |    98.73 |     100 |     100 | 131
+ events.ts           |     100 |    94.36 |     100 |     100 | 126,172-174,176
+ host-gateway.ts     |     100 |      100 |     100 |     100 |
+ host-protocol.ts    |     100 |      100 |     100 |     100 |
+ https-transport.ts  |     100 |      100 |     100 |     100 |
+ index.ts            |     100 |      100 |     100 |     100 |
+ mock-bridge.ts      |     100 |      100 |     100 |     100 |
+ native-transport.ts |     100 |      100 |     100 |     100 |
+ presence.ts         |     100 |    93.45 |     100 |     100 | 73,75-76,96,116,152
+ recovery.ts         |     100 |       99 |     100 |     100 | 87
+ retention.ts        |     100 |    97.45 |     100 |     100 | 105,113,118-119
+ server.ts           |     100 |      100 |     100 |     100 |
+---------------------|---------|----------|---------|---------|---------------------
+Production TypeScript inventory (14 files)
+file                                statements    branches   functions       lines
+src/bridge.ts                             100%      96.29%        100%        100%
+src/config.ts                             100%        100%        100%        100%
+src/connector-policy.ts                   100%      98.73%        100%        100%
+src/events.ts                             100%      94.36%        100%        100%
+src/host-gateway.ts                       100%        100%        100%        100%
+src/host-protocol.ts                      100%        100%        100%        100%
+src/https-transport.ts                    100%        100%        100%        100%
+src/index.ts                              100%        100%        100%        100%
+src/mock-bridge.ts                        100%        100%        100%        100%
+src/native-transport.ts                   100%        100%        100%        100%
+src/presence.ts                           100%      93.45%        100%        100%
+src/recovery.ts                           100%         99%        100%        100%
+src/retention.ts                          100%      97.45%        100%        100%
+src/server.ts                             100%        100%        100%        100%
+TOTAL                                     100%      98.26%        100%        100%

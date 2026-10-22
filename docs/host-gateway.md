@@ -1,6 +1,6 @@
 # Optional macOS HTTPS host gateway
 
-This optional component keeps the signed Swift HomeKit bridge on macOS while a Docker container runs the MCP server and pure index/storage planning code. There is no active recording index worker. The gateway is implemented but has **not been started or tested with a real network, TLS credentials, HomeKit authorization, or household data**. Unit tests use a fake bridge and synthetic request bytes only.
+This optional component keeps the signed Swift HomeKit bridge on macOS while a Docker container runs the MCP server and pure index/storage planning code. There is no active recording index worker. The gateway is implemented but has **not been started or tested with a real network, TLS credentials, HomeKit authorization, or household data**. Tests use injected fakes, synthetic request bytes and harmless temporary files only (see Verification performed).
 
 The gateway binds only `127.0.0.1:18443`, requires TLS 1.3 and a dedicated bearer token, and serves one route: `POST /bridge`. It is a local bridge for an approved Docker Desktop client. It does not make dot cloud able to reach this Mac, and it is not an OAuth connector or a remotely hosted MCP service.
 
@@ -55,4 +55,8 @@ Requests are bounded to 64 KiB, headers to 16 KiB, serialized responses to 1 MiB
 
 ## Verification performed
 
-`test/host-protocol.test.ts` covers authenticated read dispatch, approval/argument parsing, route and method rejection, Origin and duplicate-header rejection, malformed/oversized bodies, disallowed commands, the real wrapper's allowlist denial, bounded responses, and error redaction. Importing the gateway for these tests does not start it. No test creates TLS keys, writes token files, listens on a port, launches the native helper, or asks for HomeKit permission.
+`test/host-protocol.test.ts` covers authenticated read dispatch, approval/argument parsing, route and method rejection, Origin and duplicate-header rejection, malformed/oversized bodies, disallowed commands, the real wrapper's allowlist denial, bounded responses, and error redaction. Importing the gateway for these tests does not start it. No test creates real TLS keys, listens on a port, launches the native helper, or asks for HomeKit permission; `test/host-gateway.test.ts` and `test/https-transport.test.ts` do write synthetic temporary files described below.
+
+`test/host-gateway.test.ts` (added 2026-10-21) drives `runHostGateway` through injected fakes for the platform, file opener, TLS primitives, HTTPS server, helper bridge and signals. It covers option parsing; bounded, owned, private-file checks; the executable checks; certificate/key/validity failures with parser text hidden; refusal of every bad credential or config before the helper or server exists; loopback-only exclusive binding with the documented limits; request rejection before the body is read; fixed error bodies; idempotent shutdown; and cleanup after failed startup, including failed signal registration. Separate tests use harmless temp files and bounded child processes to prove the default opener's symlink (`O_NOFOLLOW`) and FIFO (`O_NONBLOCK`) refusal, and run the module directly to confirm it refuses to start without approvals.
+
+**No real credential was created.** The tests do write synthetic token-format strings and placeholder files into temporary directories, and delete them afterwards; none grants access to anything. Fake TLS primitives stand in for certificates, so real TLS behavior, a real listener, the native helper and HomeKit permission remain unverified.
